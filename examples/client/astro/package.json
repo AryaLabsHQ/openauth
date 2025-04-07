@@ -1,5 +1,6 @@
 {
   "name": "@aryalabs/example-client-astro",
+  "private": true,
   "type": "module",
   "version": "0.0.0",
   "scripts": {

@@ -4,5 +4,6 @@
   "dependencies": {
     "@aryalabs/openauth": "workspace:*",
     "sst": "3.5.1"
-  }
+  },
+  "private": true
 }
