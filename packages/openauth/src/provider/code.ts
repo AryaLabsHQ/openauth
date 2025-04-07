@@ -3,8 +3,8 @@
  * `CodeUI`.
  *
  * ```ts
- * import { CodeUI } from "@openauthjs/openauth/ui/code"
- * import { CodeProvider } from "@openauthjs/openauth/provider/code"
+ * import { CodeUI } from "@aryalabs/openauth/ui/code"
+ * import { CodeProvider } from "@aryalabs/openauth/provider/code"
  *
  * export default issuer({
  *   providers: {

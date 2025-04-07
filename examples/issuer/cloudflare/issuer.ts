@@ -1,12 +1,12 @@
-import { issuer } from "@openauthjs/openauth"
-import { CloudflareStorage } from "@openauthjs/openauth/storage/cloudflare"
+import { issuer } from "@aryalabs/openauth"
+import { CloudflareStorage } from "@aryalabs/openauth/storage/cloudflare"
 import {
   type ExecutionContext,
   type KVNamespace,
 } from "@cloudflare/workers-types"
 import { subjects } from "../../subjects.js"
-import { PasswordProvider } from "@openauthjs/openauth/provider/password"
-import { PasswordUI } from "@openauthjs/openauth/ui/password"
+import { PasswordProvider } from "@aryalabs/openauth/provider/password"
+import { PasswordUI } from "@aryalabs/openauth/ui/password"
 
 interface Env {
   CloudflareAuthKV: KVNamespace

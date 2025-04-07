@@ -3,8 +3,8 @@
  * paired with the `PasswordUI`.
  *
  * ```ts
- * import { PasswordUI } from "@openauthjs/openauth/ui/password"
- * import { PasswordProvider } from "@openauthjs/openauth/provider/password"
+ * import { PasswordUI } from "@aryalabs/openauth/ui/password"
+ * import { PasswordProvider } from "@aryalabs/openauth/provider/password"
  *
  * export default issuer({
  *   providers: {

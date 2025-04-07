@@ -4,7 +4,7 @@
  * #### Using OAuth
  *
  * ```ts {5-8}
- * import { FacebookProvider } from "@openauthjs/openauth/provider/facebook"
+ * import { FacebookProvider } from "@aryalabs/openauth/provider/facebook"
  *
  * export default issuer({
  *   providers: {
@@ -19,7 +19,7 @@
  * #### Using OIDC
  *
  * ```ts {5-7}
- * import { FacebookOidcProvider } from "@openauthjs/openauth/provider/facebook"
+ * import { FacebookOidcProvider } from "@aryalabs/openauth/provider/facebook"
  *
  * export default issuer({
  *   providers: {

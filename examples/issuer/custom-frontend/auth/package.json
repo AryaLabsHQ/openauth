@@ -1,7 +1,7 @@
 {
-  "name": "@openauthjs/example-custom-frontend-issuer",
+  "name": "@aryalabs/example-custom-frontend-issuer",
   "version": "0.0.0",
   "dependencies": {
-    "@openauthjs/openauth": "workspace:*"
+    "@aryalabs/openauth": "workspace:*"
   }
 }

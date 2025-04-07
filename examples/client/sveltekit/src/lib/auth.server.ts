@@ -1,4 +1,4 @@
-import { createClient } from "@openauthjs/openauth/client"
+import { createClient } from "@aryalabs/openauth/client"
 import type { RequestEvent } from "@sveltejs/kit"
 
 export function createAuthClient(event: RequestEvent) {

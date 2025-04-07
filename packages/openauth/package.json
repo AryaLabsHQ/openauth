@@ -1,5 +1,5 @@
 {
-  "name": "@openauthjs/openauth",
+  "name": "@aryalabs/openauth",
   "version": "0.4.3",
   "type": "module",
   "scripts": {

@@ -1,7 +1,7 @@
-import { issuer } from "@openauthjs/openauth"
-import { CodeUI } from "@openauthjs/openauth/ui/code"
-import { CodeProvider } from "@openauthjs/openauth/provider/code"
-import { MemoryStorage } from "@openauthjs/openauth/storage/memory"
+import { issuer } from "@aryalabs/openauth"
+import { CodeUI } from "@aryalabs/openauth/ui/code"
+import { CodeProvider } from "@aryalabs/openauth/provider/code"
+import { MemoryStorage } from "@aryalabs/openauth/storage/memory"
 import { subjects } from "./subjects"
 
 async function getUser(email: string) {

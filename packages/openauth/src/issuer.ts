@@ -5,7 +5,7 @@
  * The `issuer` function requires a few things:
  *
  * ```ts title="issuer.ts"
- * import { issuer } from "@openauthjs/openauth"
+ * import { issuer } from "@aryalabs/openauth"
  *
  * const app = issuer({
  *   providers: { ... },
@@ -21,8 +21,8 @@
  * to be able to authenticate with GitHub and with their email and password.
  *
  * ```ts title="issuer.ts"
- * import { GithubProvider } from "@openauthjs/openauth/provider/github"
- * import { PasswordProvider } from "@openauthjs/openauth/provider/password"
+ * import { GithubProvider } from "@aryalabs/openauth/provider/github"
+ * import { PasswordProvider } from "@aryalabs/openauth/provider/password"
  *
  * const app = issuer({
  *   providers: {
@@ -70,7 +70,7 @@
  *
  * ```ts title="subjects.ts"
  * import { object, string } from "valibot"
- * import { createSubjects } from "@openauthjs/openauth/subject"
+ * import { createSubjects } from "@aryalabs/openauth/subject"
  *
  * const subjects = createSubjects({
  *   user: object({
@@ -224,7 +224,7 @@ export interface IssuerInput<
    *
    * ```ts title="issuer.ts"
    * import { object, string } from "valibot"
-   * import { createSubjects } from "@openauthjs/openauth/subject"
+   * import { createSubjects } from "@aryalabs/openauth/subject"
    *
    * issuer({
    *   subjects: createSubjects({
@@ -242,7 +242,7 @@ export interface IssuerInput<
    *
    * @example
    * ```ts title="issuer.ts"
-   * import { DynamoStorage } from "@openauthjs/openauth/storage/dynamo"
+   * import { DynamoStorage } from "@aryalabs/openauth/storage/dynamo"
    *
    * issuer({
    *   storage: DynamoStorage()
@@ -257,7 +257,7 @@ export interface IssuerInput<
    * @example
    *
    * ```ts title="issuer.ts"
-   * import { GithubProvider } from "@openauthjs/openauth/provider/github"
+   * import { GithubProvider } from "@aryalabs/openauth/provider/github"
    *
    * issuer({
    *   providers: {
@@ -289,7 +289,7 @@ export interface IssuerInput<
    *
    * @example
    * ```ts title="issuer.ts"
-   * import { THEME_SST } from "@openauthjs/openauth/ui/theme"
+   * import { THEME_SST } from "@aryalabs/openauth/ui/theme"
    *
    * issuer({
    *   theme: THEME_SST
@@ -300,7 +300,7 @@ export interface IssuerInput<
    * Or define your own.
    *
    * ```ts title="issuer.ts"
-   * import type { Theme } from "@openauthjs/openauth/ui/theme"
+   * import type { Theme } from "@aryalabs/openauth/ui/theme"
    *
    * const MY_THEME: Theme = {
    *   // ...
@@ -354,7 +354,7 @@ export interface IssuerInput<
    * of the OpenAuth server.
    *
    * ```ts title="issuer.ts"
-   * import { Select } from "@openauthjs/openauth/ui/select"
+   * import { Select } from "@aryalabs/openauth/ui/select"
    *
    * issuer({
    *   select: Select({

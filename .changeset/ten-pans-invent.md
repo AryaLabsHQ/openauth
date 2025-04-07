@@ -1,5 +1,5 @@
 ---
-"@openauthjs/openauth": patch
+"@aryalabs/openauth": patch
 ---
 
 add linkedin adapter

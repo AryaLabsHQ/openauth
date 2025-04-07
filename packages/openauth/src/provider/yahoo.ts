@@ -2,7 +2,7 @@
  * Use this provider to authenticate with Yahoo.
  *
  * ```ts {5-8}
- * import { YahooProvider } from "@openauthjs/openauth/provider/yahoo"
+ * import { YahooProvider } from "@aryalabs/openauth/provider/yahoo"
  *
  * export default issuer({
  *   providers: {

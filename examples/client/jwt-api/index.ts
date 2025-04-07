@@ -1,4 +1,4 @@
-import { createClient } from "@openauthjs/openauth/client"
+import { createClient } from "@aryalabs/openauth/client"
 import { subjects } from "../../subjects"
 
 const headers = {

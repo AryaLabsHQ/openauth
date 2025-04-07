@@ -4,7 +4,7 @@
  * #### Using OAuth
  *
  * ```ts {5-8}
- * import { AppleProvider } from "@openauthjs/openauth/provider/apple"
+ * import { AppleProvider } from "@aryalabs/openauth/provider/apple"
  *
  * export default issuer({
  *   providers: {
@@ -37,7 +37,7 @@
  * #### Using OIDC
  *
  * ```ts {5-7}
- * import { AppleOidcProvider } from "@openauthjs/openauth/provider/apple"
+ * import { AppleOidcProvider } from "@aryalabs/openauth/provider/apple"
  *
  * export default issuer({
  *   providers: {

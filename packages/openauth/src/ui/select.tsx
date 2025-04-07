@@ -3,7 +3,7 @@
  * which providers should be displayed in the select UI.
  *
  * ```ts
- * import { Select } from "@openauthjs/openauth/ui/select"
+ * import { Select } from "@aryalabs/openauth/ui/select"
  *
  * export default issuer({
  *   select: Select({

@@ -2,7 +2,7 @@
  * Use this provider to authenticate with JumpCloud.
  *
  * ```ts {5-8}
- * import { JumpCloudProvider } from "@openauthjs/openauth/provider/jumpcloud"
+ * import { JumpCloudProvider } from "@aryalabs/openauth/provider/jumpcloud"
  *
  * export default issuer({
  *   providers: {
