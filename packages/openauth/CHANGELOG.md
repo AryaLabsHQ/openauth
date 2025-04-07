@@ -1,5 +1,11 @@
 # @aryalabs/openauth
 
+## 0.5.0
+
+### Minor Changes
+
+- 3b67c64: support auth code flow with OIDC providers
+
 ## 0.4.5
 
 ### Patch Changes

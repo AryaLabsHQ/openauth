@@ -1,6 +1,6 @@
 {
   "name": "@aryalabs/openauth",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "build": "bun run script/build.ts",
@@ -33,6 +33,14 @@
       "types": "./dist/types/ui/index.d.ts"
     }
   },
+  "keywords": [
+    "openauth",
+    "auth",
+    "authentication",
+    "oauth",
+    "openid",
+    "openid connect"
+  ],
   "peerDependencies": {
     "arctic": "^2.2.2",
     "hono": "^4.0.0"
