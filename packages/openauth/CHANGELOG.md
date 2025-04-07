@@ -1,5 +1,11 @@
 # @aryalabs/openauth
 
+## 0.4.5
+
+### Patch Changes
+
+- a705dba: update Google icon to comply with branding guidelines and refactor icons in `select.tsx`
+
 ## 0.4.4
 
 ### Patch Changes
