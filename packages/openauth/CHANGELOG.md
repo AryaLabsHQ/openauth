@@ -1,5 +1,11 @@
 # @aryalabs/openauth
 
+## 0.6.0
+
+### Minor Changes
+
+- 3805eea: support iOS AuthenticationServices SIWA flow with Apple OIDC provider
+
 ## 0.5.0
 
 ### Minor Changes
