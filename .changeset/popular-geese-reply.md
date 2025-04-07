@@ -1,5 +1,5 @@
 ---
-"@openauthjs/openauth": patch
+"@aryalabs/openauth": patch
 ---
 
-update google icon to comply with branding guidelines
+update Google icon to comply with branding guidelines and refactor icons in `select.tsx`
