@@ -1,5 +1,11 @@
 # @aryalabs/openauth
 
+## 0.6.1
+
+### Patch Changes
+
+- 2a3ed77: fix(icon): add fill attribute to Apple icon SVG for proper color rendering
+
 ## 0.6.0
 
 ### Minor Changes
