@@ -6,6 +6,9 @@
     "build": "bun run script/build.ts",
     "test": "bun test"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "devDependencies": {
     "@cloudflare/workers-types": "4.20241205.0",

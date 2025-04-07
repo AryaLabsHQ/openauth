@@ -8,6 +8,7 @@
     "examples/client/*"
   ],
   "scripts": {
+    "changeset": "changeset",
     "release": "bun run --filter=\"@aryalabs/openauth\" build && changeset publish"
   },
   "devDependencies": {
