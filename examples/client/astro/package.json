@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "@aryalabs/openauth": "workspace:*",
-    "astro": "5.0.2"
+    "astro": "^5.7.13"
   }
 }

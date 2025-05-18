@@ -11,12 +11,12 @@
   },
   "sideEffects": false,
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20241205.0",
-    "@tsconfig/node22": "22.0.0",
-    "@types/node": "22.10.1",
+    "@cloudflare/workers-types": "^4.20250517.0",
+    "@tsconfig/node22": "^22.0.1",
+    "@types/node": "^22.15.18",
     "arctic": "2.2.2",
-    "hono": "4.6.9",
-    "typescript": "5.6.3",
+    "hono": "^4.7.10",
+    "typescript": "^5.8.3",
     "valibot": "1.0.0-beta.15"
   },
   "exports": {
@@ -46,7 +46,7 @@
     "hono": "^4.0.0"
   },
   "dependencies": {
-    "@standard-schema/spec": "1.0.0-beta.3",
+    "@standard-schema/spec": "1.0.0",
     "aws4fetch": "1.0.20",
     "jose": "5.9.6"
   },
