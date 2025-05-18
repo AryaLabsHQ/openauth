@@ -1,5 +1,6 @@
 packages:
   - packages/*
+  - www
   - examples/issuer/*
   - examples/client/*
   - examples/shared
