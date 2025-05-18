@@ -3,5 +3,6 @@ packages:
   - examples/issuer/*
   - examples/client/*
 onlyBuiltDependencies:
+  - '@biomejs/biome'
   - esbuild
   - sharp
