@@ -9,10 +9,12 @@
   ],
   "scripts": {
     "changeset": "changeset",
-    "release": "bun run --filter=\"@aryalabs/openauth\" build && changeset publish"
+    "release": "bun run --filter=\"@aryalabs/openauth\" build && changeset publish",
+    "sherif": "sherif --fix"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.1"
+    "@tsconfig/node22": "^22.0.1",
+    "sherif": "^1.5.0"
   },
   "dependencies": {
     "@changesets/cli": "^2.29.4",
