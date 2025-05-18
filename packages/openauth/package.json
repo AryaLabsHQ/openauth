@@ -14,16 +14,16 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "types": "./dist/types/index.d.ts"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./*": {
-      "import": "./dist/esm/*.js",
-      "types": "./dist/types/*.d.ts"
+      "import": "./dist/*.js",
+      "types": "./dist/*.d.ts"
     },
     "./ui": {
-      "import": "./dist/esm/ui/index.js",
-      "types": "./dist/types/ui/index.d.ts"
+      "import": "./dist/ui/index.js",
+      "types": "./dist/ui/index.d.ts"
     }
   },
   "keywords": [
