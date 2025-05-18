@@ -5,5 +5,8 @@
   "dependencies": {
     "@aryalabs/openauth": "workspace:*",
     "sst": "3.14.27"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250517.0"
   }
 }

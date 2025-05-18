@@ -1,5 +1,11 @@
 {
   "name": "node",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@aryalabs/openauth": "workspace:*"
+  },
+  "devDependencies": {
+    "@hono/node-server": "^1.14.1"
+  }
 }

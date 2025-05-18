@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@aryalabs/openauth": "workspace:*",
+    "hono": "^4.7.10",
     "sst": "3.14.27"
   },
   "private": true
