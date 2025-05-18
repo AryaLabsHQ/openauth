@@ -23,6 +23,6 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
   } catch (e) {}
 
-  const { url } = await client.authorize(event.url.origin + "/callback", "code");
+  const { url } = await client.authorize(`${event.url.origin}/callback`, "code");
   return redirect(302, url);
 };

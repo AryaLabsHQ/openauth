@@ -17,7 +17,7 @@ export default {
       issuer: env.OPENAUTH_ISSUER,
     });
     const url = new URL(request.url);
-    const redirectURI = url.origin + "/callback";
+    const redirectURI = `${url.origin}/callback`;
 
     switch (url.pathname) {
       case "/callback":
@@ -34,15 +34,16 @@ export default {
         }
       case "/authorize":
         return Response.redirect(await client.authorize(redirectURI, "code").then((v) => v.url), 302);
-      case "/":
+      case "/": {
         const cookies = new URLSearchParams(request.headers.get("cookie")?.replaceAll("; ", "&"));
         const verified = await client.verify(subjects, cookies.get("access_token")!, {
           refresh: cookies.get("refresh_token") || undefined,
         });
-        if (verified.err) return Response.redirect(url.origin + "/authorize", 302);
+        if (verified.err) return Response.redirect(`${url.origin}/authorize`, 302);
         const resp = Response.json(verified.subject);
         if (verified.tokens) setSession(resp, verified.tokens.access, verified.tokens.refresh);
         return resp;
+      }
       default:
         return new Response("Not found", { status: 404 });
     }

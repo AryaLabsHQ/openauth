@@ -49,7 +49,7 @@ const issuerConfig = {
         userID: "123",
       });
     }
-    throw new Error("Invalid provider: " + value.provider);
+    throw new Error(`Invalid provider: ${value.provider}`);
   },
 };
 const auth = issuer(issuerConfig);

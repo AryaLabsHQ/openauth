@@ -545,7 +545,7 @@ export function createClient(input: ClientInput): Client {
 
   const result = {
     async authorize(redirectURI: string, response: "code" | "token", opts?: AuthorizeOptions) {
-      const result = new URL(issuer + "/authorize");
+      const result = new URL(`${issuer}/authorize`);
       const challenge: Challenge = {
         state: crypto.randomUUID(),
       };
@@ -574,7 +574,7 @@ export function createClient(input: ClientInput): Client {
         provider?: string;
       },
     ) {
-      const result = new URL(issuer + "/authorize");
+      const result = new URL(`${issuer}/authorize`);
       if (opts?.provider) result.searchParams.set("provider", opts.provider);
       result.searchParams.set("client_id", input.clientID);
       result.searchParams.set("redirect_uri", redirectURI);
@@ -585,7 +585,7 @@ export function createClient(input: ClientInput): Client {
       return [pkce.verifier, result.toString()];
     },
     async exchange(code: string, redirectURI: string, verifier?: string): Promise<ExchangeSuccess | ExchangeError> {
-      const tokens = await f(issuer + "/token", {
+      const tokens = await f(`${issuer}/token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -614,7 +614,7 @@ export function createClient(input: ClientInput): Client {
       };
     },
     async refresh(refresh: string, opts?: RefreshOptions): Promise<RefreshSuccess | RefreshError> {
-      if (opts && opts.access) {
+      if (opts?.access) {
         const decoded = decodeJwt(opts.access);
         if (!decoded) {
           return {
@@ -628,7 +628,7 @@ export function createClient(input: ClientInput): Client {
           };
         }
       }
-      const tokens = await f(issuer + "/token", {
+      const tokens = await f(`${issuer}/token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -679,8 +679,8 @@ export function createClient(input: ClientInput): Client {
         if (e instanceof errors.JWTExpired && options?.refresh) {
           const refreshed = await this.refresh(options.refresh);
           if (refreshed.err) return refreshed;
-          const verified = await result.verify(subjects, refreshed.tokens!.access, {
-            refresh: refreshed.tokens!.refresh,
+          const verified = await result.verify(subjects, refreshed.tokens?.access, {
+            refresh: refreshed.tokens?.refresh,
             issuer,
             fetch: options?.fetch,
           });

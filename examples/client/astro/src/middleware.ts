@@ -22,6 +22,6 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
     }
   } catch (e) {}
 
-  const { url } = await client.authorize(new URL(ctx.request.url).origin + "/callback", "code");
+  const { url } = await client.authorize(`${new URL(ctx.request.url).origin}/callback`, "code");
   return Response.redirect(url, 302);
 });

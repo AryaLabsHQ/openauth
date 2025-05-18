@@ -20,7 +20,7 @@ export default issuer({
         console.log(claims.email, code);
       },
       async request(req, state, _form, error) {
-        const url = new URL(`http://localhost:3001`);
+        const url = new URL("http://localhost:3001");
         url.pathname = `/auth/${state.type}`;
         if (error) url.searchParams.set("error", error.type);
         return new Response(null, {

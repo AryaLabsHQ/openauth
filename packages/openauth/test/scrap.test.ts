@@ -75,5 +75,5 @@ test("code flow", async () => {
   expect(next.tokens?.refresh).toBeDefined();
   expect(next.tokens?.access).not.toEqual(exchanged.tokens.access);
   expect(next.tokens?.refresh).not.toEqual(exchanged.tokens.refresh);
-  await client.verify(subjects, next.tokens!.access!);
+  await client.verify(subjects, next.tokens?.access!);
 });

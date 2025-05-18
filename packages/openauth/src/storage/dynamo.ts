@@ -161,7 +161,7 @@ export function DynamoStorage(options: DynamoStorageOptions): StorageAdapter {
         const params = {
           TableName: tableName,
           ExclusiveStartKey: lastEvaluatedKey,
-          KeyConditionExpression: prefixSk ? `#pk = :pk AND begins_with(#sk, :sk)` : `#pk = :pk`,
+          KeyConditionExpression: prefixSk ? "#pk = :pk AND begins_with(#sk, :sk)" : "#pk = :pk",
           ExpressionAttributeNames: {
             "#pk": pk,
             ...(prefixSk && { "#sk": sk }),

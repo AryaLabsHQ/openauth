@@ -150,7 +150,7 @@ export function AppleOidcProvider(config: AppleOidcConfig) {
     }
 
     try {
-      const jwksUrl = new URL(`https://appleid.apple.com/auth/keys`) as any;
+      const jwksUrl = new URL("https://appleid.apple.com/auth/keys") as any;
       const jwks = createRemoteJWKSet(jwksUrl);
 
       const { payload } = await jwtVerify(idToken, jwks, {

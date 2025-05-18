@@ -29,7 +29,7 @@ export class OauthError extends Error {
       | "temporarily_unavailable",
     public description: string,
   ) {
-    super(error + " - " + description);
+    super(`${error} - ${description}`);
   }
 }
 
@@ -47,7 +47,7 @@ export class MissingProviderError extends OauthError {
  */
 export class MissingParameterError extends OauthError {
   constructor(public parameter: string) {
-    super("invalid_request", "Missing parameter: " + parameter);
+    super("invalid_request", `Missing parameter: ${parameter}`);
   }
 }
 

@@ -37,7 +37,7 @@ export function isDomainMatch(a: string, b: string): boolean {
   if (a === b) return true;
   const partsA = a.split(".");
   const partsB = b.split(".");
-  const hasTwoPartTld = twoPartTlds.some((tld) => a.endsWith("." + tld) || b.endsWith("." + tld));
+  const hasTwoPartTld = twoPartTlds.some((tld) => a.endsWith(`.${tld}`) || b.endsWith(`.${tld}`));
   const numParts = hasTwoPartTld ? -3 : -2;
   const min = Math.min(partsA.length, partsB.length, numParts);
   const tailA = partsA.slice(min).join(".");

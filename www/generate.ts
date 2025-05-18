@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import * as TypeDoc from "typedoc";
 import config from "./config";
 
@@ -185,7 +185,7 @@ function renderProvider(module: TypeDoc.DeclarationReflection) {
     renderAbout(renderComment(module)),
     renderFunctions(module),
     renderInterfaces(module),
-    `</div>`,
+    "</div>",
   ]);
 }
 
@@ -205,7 +205,7 @@ function renderStorage(module: TypeDoc.DeclarationReflection) {
     renderAbout(renderComment(module)),
     renderFunctions(module),
     renderInterfaces(module),
-    `</div>`,
+    "</div>",
   ]);
 }
 
@@ -226,12 +226,12 @@ function renderUI(module: TypeDoc.DeclarationReflection) {
     renderVariables(module, { title: "Themes" }),
     renderFunctions(module),
     renderInterfaces(module),
-    `</div>`,
+    "</div>",
   ]);
 }
 
 function renderSubject() {
-  console.debug(`renderSubject`);
+  console.debug("renderSubject");
 
   const module = subject;
   const name = module.name;
@@ -247,12 +247,12 @@ function renderSubject() {
     renderAbout(renderComment(module)),
     renderFunctions(module),
     renderInterfaces(module),
-    `</div>`,
+    "</div>",
   ]);
 }
 
 function renderClient() {
-  console.debug(`renderClient`);
+  console.debug("renderClient");
 
   const module = client;
   const name = module.name;
@@ -262,7 +262,7 @@ function renderClient() {
       title: title || name,
       moduleName: module.name,
       editUrl: editUrl || false,
-      description: description || `A page for the client.`,
+      description: description || "A page for the client.",
     }),
     `<div class="tsdoc">`,
     renderAbout(renderComment(module)),
@@ -274,12 +274,12 @@ function renderClient() {
     renderInterfaces(module, {
       filter: (i) => i.name !== "Client",
     }),
-    `</div>`,
+    "</div>",
   ]);
 }
 
 function renderIssuer() {
-  console.debug(`renderIssuer`);
+  console.debug("renderIssuer");
 
   const errors = error.getChildrenByKind(TypeDoc.ReflectionKind.Class);
   const name = issuer.name;
@@ -298,7 +298,7 @@ function renderIssuer() {
     "## Errors",
     renderAbout(renderComment(error)),
     errors.map(renderClass),
-    `</div>`,
+    "</div>",
   ]);
 }
 
@@ -309,11 +309,11 @@ function renderHeader(input: {
   description: string;
 }) {
   return [
-    `---`,
+    "---",
     `title: ${input.title}`,
     `editUrl: ${input.editUrl}`,
     `description: ${input.description}`,
-    `---`,
+    "---",
     "",
     "import { Segment, Section, NestedTitle, InlineSection } from 'toolbeam-docs-theme/components'",
     "import { Tabs, TabItem } from '@astrojs/starlight/components'",
@@ -322,13 +322,13 @@ function renderHeader(input: {
 }
 
 function renderAbout(content: Text) {
-  console.debug(` ∟renderAbout`);
-  return [`<Section type="about">`, content, `</Section>`, "---"];
+  console.debug(" ∟renderAbout");
+  return [`<Section type="about">`, content, "</Section>", "---"];
 }
 
 function renderClass(c: TypeDoc.DeclarationReflection) {
   console.debug(`   ∟class: ${c.name}`);
-  return [`### ${c.name}`, `<Segment>`, renderComment(c), `</Segment>`];
+  return [`### ${c.name}`, "<Segment>", renderComment(c), "</Segment>"];
 }
 
 function renderVariables(
@@ -337,19 +337,19 @@ function renderVariables(
     title: string;
   },
 ) {
-  console.debug(` ∟renderVariables`);
+  console.debug(" ∟renderVariables");
   const variables = module.getChildrenByKind(TypeDoc.ReflectionKind.Variable);
   return render(variables.length, [
     `## ${options.title}`,
     variables.map((v) => {
       console.debug(`   ∟variable: ${v.name}`);
-      return [`### ${v.name}`, `<Segment>`, renderComment(v), `</Segment>`];
+      return [`### ${v.name}`, "<Segment>", renderComment(v), "</Segment>"];
     }),
   ]);
 }
 
 function renderFunctions(module: TypeDoc.DeclarationReflection) {
-  console.debug(` ∟renderFunctions`);
+  console.debug(" ∟renderFunctions");
   const functions = module.getChildrenByKind(TypeDoc.ReflectionKind.Function);
   return render(functions.length, [
     "## Methods",
@@ -357,23 +357,23 @@ function renderFunctions(module: TypeDoc.DeclarationReflection) {
       console.debug(`   ∟function: ${f.name}`);
       return [
         `### ${f.name}`,
-        `<Segment>`,
+        "<Segment>",
         `<Section type="signature">`,
-        renderSignatureAsCode(f.signatures![0]),
-        `</Section>`,
-        render(f.signatures![0].parameters?.length, [
+        renderSignatureAsCode(f.signatures?.[0]),
+        "</Section>",
+        render(f.signatures?.[0].parameters?.length, [
           `<Section type="parameters">`,
-          `#### Parameters`,
-          f.signatures![0].parameters!.map((p) => {
+          "#### Parameters",
+          f.signatures?.[0].parameters?.map((p) => {
             return [`- <p><code class="key">${renderParameter(p)}</code> ${renderType(p.type!)}</p>`, renderComment(p)];
           }),
-          `</Section>`,
+          "</Section>",
         ]),
-        `<InlineSection>`,
-        `**Returns** ${renderType(f.signatures![0].type!)}`,
-        `</InlineSection>`,
-        renderComment(f.signatures![0]),
-        `</Segment>`,
+        "<InlineSection>",
+        `**Returns** ${renderType(f.signatures?.[0].type!)}`,
+        "</InlineSection>",
+        renderComment(f.signatures?.[0]),
+        "</Segment>",
       ];
     }),
   ]);
@@ -386,7 +386,7 @@ function renderInterfaces(
     depth?: "h2" | "h3";
   },
 ) {
-  console.debug(` ∟renderInterfaces`);
+  console.debug(" ∟renderInterfaces");
   const depth = options?.depth ?? "h2";
   const interfaces = [
     ...module.getChildrenByKind(TypeDoc.ReflectionKind.Interface),
@@ -400,14 +400,14 @@ function renderInterfaces(
     if (i.kindOf(TypeDoc.ReflectionKind.TypeAlias)) {
       return [
         `## ${i.name}`,
-        `<Segment>`,
+        "<Segment>",
         `<Section type="parameters">`,
-        `<InlineSection>`,
+        "<InlineSection>",
         `**Type** ${renderType(i.type!)}`,
-        `</InlineSection>`,
-        `</Section>`,
+        "</InlineSection>",
+        "</Section>",
         renderComment(i),
-        `</Segment>`,
+        "</Segment>",
       ];
     }
     // render interface as a type
@@ -417,7 +417,7 @@ function renderInterfaces(
       const methods = i.getChildrenByKind(TypeDoc.ReflectionKind.Method);
       return [
         `## ${i.name}`,
-        `<Segment>`,
+        "<Segment>",
         render(depth === "h2", [
           `<Section type="parameters">`,
           properties.map((p) => [
@@ -430,47 +430,47 @@ function renderInterfaces(
             ),
           ]),
           methods.map((m) => {
-            return `- <p>[<code class="key">${renderProperty(m)}</code>](#${buildLinkHash(i.name, m.name)}) ${renderSignatureAsType(m.signatures![0])}</p>`;
+            return `- <p>[<code class="key">${renderProperty(m)}</code>](#${buildLinkHash(i.name, m.name)}) ${renderSignatureAsType(m.signatures?.[0])}</p>`;
           }),
-          `</Section>`,
+          "</Section>",
         ]),
         renderComment(i),
-        `</Segment>`,
+        "</Segment>",
         // Render nested types
         properties.flatMap((p) => [
           `<NestedTitle id="${buildLinkHash(i.name, p.name)}" Tag="h4" parent="${i.name}.">${renderProperty(p)}</NestedTitle>`,
-          `<Segment>`,
+          "<Segment>",
           `<Section type="parameters">`,
-          `<InlineSection>`,
+          "<InlineSection>",
           `**Type** ${renderType(p.type!)}`,
-          `</InlineSection>`,
-          `</Section>`,
+          "</InlineSection>",
+          "</Section>",
           renderComment(p),
-          `</Segment>`,
+          "</Segment>",
           flattenNestedTypes(p.type!, p.name).map(({ depth, prefix, subType }) => [
             `<NestedTitle id="${buildLinkHash(prefix, subType.name)}" Tag="h5" parent="${i.name}.${prefix}.">${renderProperty(subType)}</NestedTitle>`,
-            `<Segment>`,
+            "<Segment>",
             `<Section type="parameters">`,
-            `<InlineSection>`,
+            "<InlineSection>",
             `**Type** ${renderType(subType.type!)}`,
-            `</InlineSection>`,
-            `</Section>`,
+            "</InlineSection>",
+            "</Section>",
             renderComment(subType),
-            `</Segment>`,
+            "</Segment>",
           ]),
         ]),
         methods.flatMap((m) => [
           depth === "h2"
             ? `<NestedTitle id="${buildLinkHash(i.name, m.name)}" Tag="h4" parent="${i.name}.">${renderProperty(m)}</NestedTitle>`
             : `### ${m.name}`,
-          `<Segment>`,
+          "<Segment>",
           `<Section type="parameters">`,
-          `<InlineSection>`,
-          `**Type** ${renderSignatureAsType(m.signatures![0])}`,
-          `</InlineSection>`,
-          `</Section>`,
-          renderComment(m.signatures![0]),
-          `</Segment>`,
+          "<InlineSection>",
+          `**Type** ${renderSignatureAsType(m.signatures?.[0])}`,
+          "</InlineSection>",
+          "</Section>",
+          renderComment(m.signatures?.[0]),
+          "</Segment>",
         ]),
       ];
     }
@@ -483,21 +483,21 @@ function renderComment(declaration: TypeDoc.Reflection) {
   return [
     declaration instanceof TypeDoc.DeclarationReflection && declaration.defaultValue
       ? [
-          ``,
-          `<InlineSection>`,
+          "",
+          "<InlineSection>",
           `**Default** ${renderType({
             type: "literal",
             value: declaration.defaultValue.replace(/"/g, ""),
           } as TypeDoc.LiteralType)}`,
-          `</InlineSection>`,
+          "</InlineSection>",
         ]
       : [],
     declaration.comment.blockTags
       .filter((tag) => tag.tag === "@default")
       .map((tag) => {
         return [
-          ``,
-          `<InlineSection>`,
+          "",
+          "<InlineSection>",
           // If default tag is just a value, render it as a type ie. false
           // Otherwise render it as a comment ie. No domains configured
           tag.content.length === 1 && tag.content[0].kind === "code"
@@ -505,7 +505,7 @@ function renderComment(declaration: TypeDoc.Reflection) {
                 new TypeDoc.IntrinsicType(tag.content[0].text.replace(/`/g, "").replace(/{/g, "&lcub;").replace(/}/g, "&rcub;")),
               )}`
             : `**Default** ${tag.content.map((c) => c.text)}`,
-          `</InlineSection>`,
+          "</InlineSection>",
         ];
       }),
     declaration.comment.summary.map((s) => s.text).join(""),
@@ -538,11 +538,11 @@ function renderParameter(parameter: TypeDoc.ParameterReflection) {
     throw new Error(
       [
         `Unsupported default value "${parameter.defaultValue}" for name "${parameter.name}".`,
-        ``,
-        `Function signature parameters can be defined as optional in one of two ways:`,
+        "",
+        "Function signature parameters can be defined as optional in one of two ways:",
         ` - flag.isOptional is set, ie. "(args?: FooArgs)"`,
         ` - defaultValue is set, ie. "(args: FooArgs = {})`,
-        ``,
+        "",
         `But in this case, the default value is not "{}". Hence not supported.`,
       ].join("\n"),
     );
@@ -611,7 +611,7 @@ function renderLiteralType(type: TypeDoc.LiteralType) {
   //   "type": "literal",
   //   "value": "arm64"
   // }
-  const sanitized = typeof type.value === "string" ? type.value!.replace(/([*:])/g, "\\$1") : type.value;
+  const sanitized = typeof type.value === "string" ? type.value?.replace(/([*:])/g, "\\$1") : type.value;
   return `<code class="symbol">&ldquo;</code><code class="primitive">${sanitized}</code><code class="symbol">&rdquo;</code>`;
 }
 function renderTemplateLiteralType(type: TypeDoc.TemplateLiteralType) {
@@ -637,7 +637,7 @@ function renderTemplateLiteralType(type: TypeDoc.TemplateLiteralType) {
     typeof type.tail[0][1] !== "string"
   ) {
     console.error(type);
-    throw new Error(`Unsupported templateLiteral type`);
+    throw new Error("Unsupported templateLiteral type");
   }
   return `<code class="symbol">&ldquo;</code><code class="primitive">${type.head}$\\{${type.tail[0][0].name}\\}${type.tail[0][1]}</code><code class="symbol">&rdquo;</code>`;
 }
@@ -658,13 +658,13 @@ function renderArrayType(type: TypeDoc.ArrayType) {
     : `${renderType(type.elementType)}<code class="symbol">[]</code>`;
 }
 function renderCallbackType(type: TypeDoc.ReflectionType) {
-  return renderSignatureAsType(type.declaration.signatures![0]);
+  return renderSignatureAsType(type.declaration.signatures?.[0]);
 }
 function renderObjectTypeInline(type: TypeDoc.ReflectionType): Text {
   return [
     `<code class="symbol">&lcub; </code>`,
-    type.declaration
-      .children!.map((c) =>
+    type.declaration.children
+      ?.map((c) =>
         [
           `<code class="key">${c.name}</code>`,
           `<code class="symbol">&colon; </code>`,
@@ -680,7 +680,7 @@ function renderObjectTypeInline(type: TypeDoc.ReflectionType): Text {
 }
 function renderTypescriptType(type: TypeDoc.ReferenceType) {
   // ie. Partial<Foo> => just render Foo
-  if (type.name === "Partial") return renderType(type.typeArguments![0]);
+  if (type.name === "Partial") return renderType(type.typeArguments?.[0]);
 
   // ie. Record<string, string>
   return [
@@ -758,8 +758,8 @@ function flattenNestedTypes(
     );
   }
   if (type.type === "reflection" && type.declaration.children?.length) {
-    return type.declaration
-      .children!.filter((c) => !c.comment?.modifierTags.has("@internal"))
+    return type.declaration.children
+      ?.filter((c) => !c.comment?.modifierTags.has("@internal"))
       .filter((c) => !c.comment?.blockTags.find((t) => t.tag === "@deprecated"))
       .flatMap((subType) => [
         { prefix, subType, depth },
@@ -860,6 +860,6 @@ async function build() {
 
 function print(type: TypeDoc.SomeType) {
   // @ts-ignore
-  delete type._project;
+  type._project = undefined;
   console.log(type);
 }

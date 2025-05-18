@@ -11,7 +11,7 @@ const client = createClient({
 const app = new Hono()
   .get("/authorize", async (c) => {
     const origin = new URL(c.req.url).origin;
-    const { url } = await client.authorize(origin + "/callback", "code");
+    const { url } = await client.authorize(`${origin}/callback`, "code");
     return c.redirect(url, 302);
   })
   .get("/callback", async (c) => {
@@ -19,7 +19,7 @@ const app = new Hono()
     try {
       const code = c.req.query("code");
       if (!code) throw new Error("Missing code");
-      const exchanged = await client.exchange(code, origin + "/callback");
+      const exchanged = await client.exchange(code, `${origin}/callback`);
       if (exchanged.err)
         return new Response(exchanged.err.toString(), {
           status: 400,

@@ -157,7 +157,7 @@ export function OidcProvider(config: OidcConfig): Provider<{ id: JWTPayload; cli
   const tokenEndpointAuthMethod = config.tokenEndpointAuthMethod || "client_secret_post";
 
   const wk = lazy(() =>
-    fetch(config.issuer + "/.well-known/openid-configuration").then(async (r) => {
+    fetch(`${config.issuer}/.well-known/openid-configuration`).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());
       return r.json() as Promise<WellKnown>;
     }),
@@ -226,7 +226,7 @@ export function OidcProvider(config: OidcConfig): Provider<{ id: JWTPayload; cli
             formData.append("client_secret", config.clientSecret);
           } else if (tokenEndpointAuthMethod === "client_secret_basic") {
             const credentials = btoa(`${config.clientID}:${config.clientSecret}`);
-            headers["Authorization"] = `Basic ${credentials}`;
+            headers.Authorization = `Basic ${credentials}`;
           }
 
           const response = await fetch(tokenEndpoint, {

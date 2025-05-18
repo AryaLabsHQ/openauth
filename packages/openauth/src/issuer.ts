@@ -632,7 +632,7 @@ export function issuer<
         ...value,
         nextToken: crypto.randomUUID(),
       };
-      delete refreshValue.timeUsed;
+      refreshValue.timeUsed = undefined;
       await Storage.set(storage!, ["oauth:refresh", value.subject, refreshToken], refreshValue, value.ttl.refresh);
     }
     const accessTimeUsed = Math.floor((value.timeUsed ?? Date.now()) / 1000);

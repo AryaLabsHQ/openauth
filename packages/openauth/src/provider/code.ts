@@ -88,7 +88,7 @@ export interface CodeProviderConfig<Claims extends Record<string, string> = Reco
    * }
    * ```
    */
-  sendCode: (claims: Claims, code: string) => Promise<void | CodeProviderError>;
+  sendCode: (claims: Claims, code: string) => Promise<undefined | CodeProviderError>;
 }
 
 /**
@@ -159,7 +159,7 @@ export function CodeProvider<Claims extends Record<string, string> = Record<stri
 
         if (action === "request" || action === "resend") {
           const claims = Object.fromEntries(fd) as Claims;
-          delete claims.action;
+          claims.action = undefined;
           const err = await config.sendCode(claims, code);
           if (err) return transition(c, { type: "start" }, fd, err);
           return transition(
