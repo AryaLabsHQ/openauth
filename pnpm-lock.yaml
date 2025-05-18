@@ -77,7 +77,37 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
-  examples/client/react:
+  examples/client/sveltekit:
+    devDependencies:
+      '@aryalabs/openauth':
+        specifier: workspace:*
+        version: link:../../../packages/openauth
+      '@sveltejs/adapter-auto':
+        specifier: ^4.0.0
+        version: 4.0.0(@sveltejs/kit@2.21.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18)))(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18)))
+      '@sveltejs/kit':
+        specifier: ^2.21.0
+        version: 2.21.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18)))(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18))
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^5.0.3
+        version: 5.0.3(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18))
+      svelte:
+        specifier: ^5.30.2
+        version: 5.30.2
+      svelte-check:
+        specifier: ^4.2.1
+        version: 4.2.1(picomatch@4.0.2)(svelte@5.30.2)(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      valibot:
+        specifier: 1.1.0
+        version: 1.1.0(typescript@5.8.3)
+      vite:
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@22.15.18)
+
+  examples/client/vite-react:
     dependencies:
       '@aryalabs/openauth':
         specifier: workspace:*
@@ -119,36 +149,6 @@ importers:
       typescript-eslint:
         specifier: ^8.32.1
         version: 8.32.1(eslint@9.27.0)(typescript@5.8.3)
-      vite:
-        specifier: ^6.3.5
-        version: 6.3.5(@types/node@22.15.18)
-
-  examples/client/sveltekit:
-    devDependencies:
-      '@aryalabs/openauth':
-        specifier: workspace:*
-        version: link:../../../packages/openauth
-      '@sveltejs/adapter-auto':
-        specifier: ^4.0.0
-        version: 4.0.0(@sveltejs/kit@2.21.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18)))(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18)))
-      '@sveltejs/kit':
-        specifier: ^2.21.0
-        version: 2.21.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18)))(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18))
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^5.0.3
-        version: 5.0.3(svelte@5.30.2)(vite@6.3.5(@types/node@22.15.18))
-      svelte:
-        specifier: ^5.30.2
-        version: 5.30.2
-      svelte-check:
-        specifier: ^4.2.1
-        version: 4.2.1(picomatch@4.0.2)(svelte@5.30.2)(typescript@5.8.3)
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-      valibot:
-        specifier: 1.1.0
-        version: 1.1.0(typescript@5.8.3)
       vite:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@22.15.18)
