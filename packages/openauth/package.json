@@ -1,12 +1,13 @@
 {
   "name": "@aryalabs/openauth",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "type": "module",
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm run build"
   },
   "publishConfig": {
     "access": "public"
