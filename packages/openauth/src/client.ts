@@ -679,7 +679,7 @@ export function createClient(input: ClientInput): Client {
         if (e instanceof errors.JWTExpired && options?.refresh) {
           const refreshed = await this.refresh(options.refresh);
           if (refreshed.err) return refreshed;
-          const verified = await result.verify(subjects, refreshed.tokens?.access, {
+          const verified = await result.verify(subjects, refreshed.tokens!.access, {
             refresh: refreshed.tokens?.refresh,
             issuer,
             fetch: options?.fetch,

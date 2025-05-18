@@ -159,6 +159,7 @@ export function CodeProvider<Claims extends Record<string, string> = Record<stri
 
         if (action === "request" || action === "resend") {
           const claims = Object.fromEntries(fd) as Claims;
+          // @ts-expect-error TODO: remove or fix type
           claims.action = undefined;
           const err = await config.sendCode(claims, code);
           if (err) return transition(c, { type: "start" }, fd, err);
