@@ -1,18 +1,24 @@
+import { subjects } from "@aryalabs/openauth-shared";
 import { createClient } from "@aryalabs/openauth/client";
 import { createCookie } from "react-router";
-import { subjects } from "@aryalabs/openauth-shared";
 
 export const client = createClient({
   clientID: "react-router",
   issuer: "http://localhost:3000",
 });
 
-export const accessCookie  = createCookie("access_token",  {
-  httpOnly: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 400,
+export const accessCookie = createCookie("access_token", {
+  httpOnly: true,
+  sameSite: "lax",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 400,
 });
 
 export const refreshCookie = createCookie("refresh_token", {
-  httpOnly: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 400,
+  httpOnly: true,
+  sameSite: "lax",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 400,
 });
 
 export async function setTokens(resHeaders: Headers, access: string, refresh: string) {
@@ -27,7 +33,7 @@ export async function clearTokens(resHeaders: Headers) {
 
 export async function verifySubject(request: Request) {
   const cookieHdr = request.headers.get("cookie") ?? "";
-  const access  = await accessCookie.parse(cookieHdr);
+  const access = await accessCookie.parse(cookieHdr);
   const refresh = await refreshCookie.parse(cookieHdr);
 
   if (!access) return false;

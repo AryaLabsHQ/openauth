@@ -1,16 +1,16 @@
-import theme from "toolbeam-docs-theme"
-import starlight from "@astrojs/starlight"
-import { defineConfig } from "astro/config"
-import { rehypeHeadingIds } from "@astrojs/markdown-remark"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import config from "./config"
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import starlight from "@astrojs/starlight";
+import { defineConfig } from "astro/config";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import theme from "toolbeam-docs-theme";
+import config from "./config";
 
-const url = "https://openauth.js.org"
+const url = "https://openauth.js.org";
 
 // https://astro.build/config
 export default defineConfig({
   site: url,
-  trailingSlash: 'always',
+  trailingSlash: "always",
   devToolbar: {
     enabled: false,
   },
@@ -76,10 +76,7 @@ export default defineConfig({
       components: {
         Hero: "./src/components/Hero.astro",
       },
-      customCss: [
-        "./src/custom.css",
-        "./src/styles/lander.css",
-      ],
+      customCss: ["./src/custom.css", "./src/styles/lander.css"],
       sidebar: [
         { label: "Intro", slug: "docs" },
         {
@@ -128,9 +125,6 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    rehypePlugins: [
-      rehypeHeadingIds,
-      [rehypeAutolinkHeadings, { behavior: "wrap" }],
-    ],
+    rehypePlugins: [rehypeHeadingIds, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
   },
-})
+});

@@ -1,13 +1,13 @@
-import { issuer } from "@aryalabs/openauth"
-import { handle } from "hono/aws-lambda"
-import { subjects } from "../../subjects.js"
-import { PasswordUI } from "@aryalabs/openauth/ui/password"
-import { PasswordProvider } from "@aryalabs/openauth/provider/password"
+import { issuer } from "@aryalabs/openauth";
+import { PasswordProvider } from "@aryalabs/openauth/provider/password";
+import { PasswordUI } from "@aryalabs/openauth/ui/password";
+import { handle } from "hono/aws-lambda";
+import { subjects } from "../../subjects.js";
 
 async function getUser(email: string) {
   // Get user from database
   // Return user ID
-  return "123"
+  return "123";
 }
 
 const app = issuer({
@@ -16,7 +16,7 @@ const app = issuer({
     password: PasswordProvider(
       PasswordUI({
         sendCode: async (email, code) => {
-          console.log(email, code)
+          console.log(email, code);
         },
       }),
     ),
@@ -25,11 +25,11 @@ const app = issuer({
     if (value.provider === "password") {
       return ctx.subject("user", {
         id: await getUser(value.email),
-      })
+      });
     }
-    throw new Error("Invalid provider")
+    throw new Error("Invalid provider");
   },
-})
+});
 
 // @ts-ignore
-export const handler = handle(app)
+export const handler = handle(app);

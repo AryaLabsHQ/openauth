@@ -86,23 +86,23 @@
  *
  * @packageDocumentation
  */
-import type { StandardSchemaV1 } from "@standard-schema/spec"
-import { Prettify } from "./util.js"
+import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type { Prettify } from "./util.js";
 
 /**
  * Subject schema is a map of types that are used to define the subjects.
  */
-export type SubjectSchema = Record<string, StandardSchemaV1>
+export type SubjectSchema = Record<string, StandardSchemaV1>;
 
 /** @internal */
 export type SubjectPayload<T extends SubjectSchema> = Prettify<
   {
     [type in keyof T & string]: {
-      type: type
-      properties: StandardSchemaV1.InferOutput<T[type]>
-    }
+      type: type;
+      properties: StandardSchemaV1.InferOutput<T[type]>;
+    };
   }[keyof T & string]
->
+>;
 
 /**
  * Create a subject schema.
@@ -123,8 +123,6 @@ export type SubjectPayload<T extends SubjectSchema> = Prettify<
  * subjects. You can use any validation library that's following the
  * [standard-schema specification](https://github.com/standard-schema/standard-schema).
  */
-export function createSubjects<Schema extends SubjectSchema = {}>(
-  types: Schema,
-): Schema {
-  return { ...types }
+export function createSubjects<Schema extends SubjectSchema = {}>(types: Schema): Schema {
+  return { ...types };
 }

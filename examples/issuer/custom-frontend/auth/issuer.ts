@@ -1,12 +1,12 @@
-import { issuer } from "@aryalabs/openauth"
-import { MemoryStorage } from "@aryalabs/openauth/storage/memory"
-import { CodeProvider } from "@aryalabs/openauth/provider/code"
-import { subjects } from "../../../subjects.js"
+import { issuer } from "@aryalabs/openauth";
+import { CodeProvider } from "@aryalabs/openauth/provider/code";
+import { MemoryStorage } from "@aryalabs/openauth/storage/memory";
+import { subjects } from "../../../subjects.js";
 
 async function getUser(email: string) {
   // Get user from database
   // Return user ID
-  return "123"
+  return "123";
 }
 
 export default issuer({
@@ -17,18 +17,18 @@ export default issuer({
   providers: {
     code: CodeProvider({
       sendCode: async (claims, code) => {
-        console.log(claims.email, code)
+        console.log(claims.email, code);
       },
       async request(req, state, _form, error) {
-        const url = new URL(`http://localhost:3001`)
-        url.pathname = `/auth/${state.type}`
-        if (error) url.searchParams.set("error", error.type)
+        const url = new URL(`http://localhost:3001`);
+        url.pathname = `/auth/${state.type}`;
+        if (error) url.searchParams.set("error", error.type);
         return new Response(null, {
           status: 302,
           headers: {
             Location: url.toString(),
           },
-        })
+        });
       },
     }),
   },
@@ -36,8 +36,8 @@ export default issuer({
     if (value.provider === "code") {
       return ctx.subject("user", {
         id: await getUser(value.claims.email),
-      })
+      });
     }
-    throw new Error("Invalid provider")
+    throw new Error("Invalid provider");
   },
-})
+});

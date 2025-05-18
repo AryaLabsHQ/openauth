@@ -51,10 +51,10 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
-import { OidcProvider, OidcWrappedConfig } from "./oidc.js"
-import { createRemoteJWKSet, jwtVerify } from "jose"
-import { OauthError } from "../error.js"
+import { createRemoteJWKSet, jwtVerify } from "jose";
+import { OauthError } from "../error.js";
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
+import { OidcProvider, type OidcWrappedConfig } from "./oidc.js";
 
 export interface AppleConfig extends Oauth2WrappedConfig {
   /**
@@ -129,43 +129,46 @@ export function AppleOidcProvider(config: AppleOidcConfig) {
     issuer: "https://appleid.apple.com",
     responseType: "code",
     tokenEndpointAuthMethod: "client_secret_post",
-  })
+  });
 
   baseProvider.client = async ({ clientID, params }) => {
     if (clientID !== config.clientID) {
-      throw new OauthError("unauthorized_client", "Client ID mismatch.")
+      throw new OauthError("unauthorized_client", "Client ID mismatch.");
     }
     if (!config.clientSecret) {
-      throw new OauthError("server_error", "Provider configuration missing clientSecret.")
+      throw new OauthError("server_error", "Provider configuration missing clientSecret.");
     }
 
-    const idToken = params.id_token
-    const appId = params.app_id
+    const idToken = params.id_token;
+    const appId = params.app_id;
 
     if (!idToken) {
-      throw new OauthError("invalid_request", "Missing required parameter: id_token")
+      throw new OauthError("invalid_request", "Missing required parameter: id_token");
     }
     if (!appId) {
-      throw new OauthError("invalid_request", "Missing required parameter: app_id")
+      throw new OauthError("invalid_request", "Missing required parameter: app_id");
     }
 
     try {
-      const jwksUrl = new URL(`https://appleid.apple.com/auth/keys`) as any
-      const jwks = createRemoteJWKSet(jwksUrl)
+      const jwksUrl = new URL(`https://appleid.apple.com/auth/keys`) as any;
+      const jwks = createRemoteJWKSet(jwksUrl);
 
       const { payload } = await jwtVerify(idToken, jwks, {
         issuer: "https://appleid.apple.com",
         audience: appId,
-      })
+      });
 
-      const email = payload.email as string
-      const isEmailVerified = payload.email_verified === true || String(payload.email_verified) === 'true'
+      const email = payload.email as string;
+      const isEmailVerified = payload.email_verified === true || String(payload.email_verified) === "true";
 
       if (!email) {
-        throw new OauthError("invalid_grant", "Email not found in Apple ID token. User might have used private relay without granting email access.")
+        throw new OauthError(
+          "invalid_grant",
+          "Email not found in Apple ID token. User might have used private relay without granting email access.",
+        );
       }
       if (!isEmailVerified) {
-        console.warn(`Apple email (${email}) is not verified. Proceeding, but verification recommended.`)
+        console.warn(`Apple email (${email}) is not verified. Proceeding, but verification recommended.`);
       }
 
       return {
@@ -174,13 +177,12 @@ export function AppleOidcProvider(config: AppleOidcConfig) {
           email_verified: isEmailVerified,
           sub: payload.sub,
         },
-        clientID: clientID
-      }
-
+        clientID: clientID,
+      };
     } catch (error: any) {
-      throw new OauthError("server_error", "Apple ID token verification failed.")
+      throw new OauthError("server_error", "Apple ID token verification failed.");
     }
-  }
+  };
 
-  return baseProvider
+  return baseProvider;
 }

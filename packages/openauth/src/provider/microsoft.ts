@@ -34,8 +34,8 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
-import { OidcProvider, OidcWrappedConfig } from "./oidc.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
+import { OidcProvider, type OidcWrappedConfig } from "./oidc.js";
 
 export interface MicrosoftConfig extends Oauth2WrappedConfig {
   /**
@@ -50,7 +50,7 @@ export interface MicrosoftConfig extends Oauth2WrappedConfig {
    * }
    * ```
    */
-  tenant: string
+  tenant: string;
 }
 export interface MicrosoftOidcConfig extends OidcWrappedConfig {}
 
@@ -75,7 +75,7 @@ export function MicrosoftProvider(config: MicrosoftConfig) {
       authorization: `https://login.microsoftonline.com/${config?.tenant}/oauth2/v2.0/authorize`,
       token: `https://login.microsoftonline.com/${config?.tenant}/oauth2/v2.0/token`,
     },
-  })
+  });
 }
 
 /**
@@ -96,5 +96,5 @@ export function MicrosoftOidcProvider(config: MicrosoftOidcConfig) {
     ...config,
     type: "microsoft",
     issuer: "https://graph.microsoft.com/oidc/userinfo",
-  })
+  });
 }

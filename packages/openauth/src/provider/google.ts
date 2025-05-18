@@ -33,8 +33,8 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
-import { OidcProvider, OidcWrappedConfig } from "./oidc.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
+import { OidcProvider, type OidcWrappedConfig } from "./oidc.js";
 
 export interface GoogleConfig extends Oauth2WrappedConfig {}
 export interface GoogleOidcConfig extends OidcWrappedConfig {}
@@ -60,7 +60,7 @@ export function GoogleProvider(config: GoogleConfig) {
       token: "https://oauth2.googleapis.com/token",
       jwks: "https://www.googleapis.com/oauth2/v3/certs",
     },
-  })
+  });
 }
 
 /**
@@ -81,5 +81,5 @@ export function GoogleOidcProvider(config: GoogleOidcConfig) {
     ...config,
     type: "google",
     issuer: "https://accounts.google.com",
-  })
+  });
 }

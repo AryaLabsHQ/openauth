@@ -1,21 +1,18 @@
-import { issuer } from "@aryalabs/openauth"
-import { CloudflareStorage } from "@aryalabs/openauth/storage/cloudflare"
-import {
-  type ExecutionContext,
-  type KVNamespace,
-} from "@cloudflare/workers-types"
-import { subjects } from "../../subjects.js"
-import { PasswordProvider } from "@aryalabs/openauth/provider/password"
-import { PasswordUI } from "@aryalabs/openauth/ui/password"
+import { issuer } from "@aryalabs/openauth";
+import { PasswordProvider } from "@aryalabs/openauth/provider/password";
+import { CloudflareStorage } from "@aryalabs/openauth/storage/cloudflare";
+import { PasswordUI } from "@aryalabs/openauth/ui/password";
+import type { ExecutionContext, KVNamespace } from "@cloudflare/workers-types";
+import { subjects } from "../../subjects.js";
 
 interface Env {
-  CloudflareAuthKV: KVNamespace
+  CloudflareAuthKV: KVNamespace;
 }
 
 async function getUser(email: string) {
   // Get user from database
   // Return user ID
-  return "123"
+  return "123";
 }
 
 export default {
@@ -29,7 +26,7 @@ export default {
         password: PasswordProvider(
           PasswordUI({
             sendCode: async (email, code) => {
-              console.log(email, code)
+              console.log(email, code);
             },
           }),
         ),
@@ -38,10 +35,10 @@ export default {
         if (value.provider === "password") {
           return ctx.subject("user", {
             id: await getUser(value.email),
-          })
+          });
         }
-        throw new Error("Invalid provider")
+        throw new Error("Invalid provider");
       },
-    }).fetch(request, env, ctx)
+    }).fetch(request, env, ctx);
   },
-}
+};

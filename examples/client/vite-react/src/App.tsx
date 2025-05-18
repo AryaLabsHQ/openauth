@@ -1,18 +1,18 @@
-import { useState } from "react"
-import { useAuth } from "./AuthContext"
+import { useState } from "react";
+import { useAuth } from "./AuthContext";
 
 function App() {
-  const auth = useAuth()
-  const [status, setStatus] = useState("")
+  const auth = useAuth();
+  const [status, setStatus] = useState("");
 
   async function callApi() {
     const res = await fetch("http://localhost:3001/", {
       headers: {
         Authorization: `Bearer ${await auth.getToken()}`,
       },
-    })
+    });
 
-    setStatus(res.ok ? "success" : "error")
+    setStatus(res.ok ? "success" : "error");
   }
 
   return !auth.loaded ? (
@@ -33,7 +33,7 @@ function App() {
         <button onClick={auth.login}>Login with OAuth</button>
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

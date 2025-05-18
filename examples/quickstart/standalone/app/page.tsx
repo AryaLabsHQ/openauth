@@ -1,21 +1,14 @@
-import Image from "next/image"
-import styles from "./page.module.css"
-import { auth, login, logout } from "./actions"
+import Image from "next/image";
+import { auth, login, logout } from "./actions";
+import styles from "./page.module.css";
 
 export default async function Home() {
-  const subject = await auth()
+  const subject = await auth();
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
+        <Image className={styles.logo} src="/next.svg" alt="Next.js logo" width={180} height={38} priority />
         <ol>
           {subject ? (
             <>
@@ -49,5 +42,5 @@ export default async function Home() {
         </div>
       </main>
     </div>
-  )
+  );
 }

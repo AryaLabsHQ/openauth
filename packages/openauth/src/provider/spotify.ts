@@ -17,7 +17,7 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
 
 export interface SpotifyConfig extends Oauth2WrappedConfig {}
 
@@ -41,5 +41,5 @@ export function SpotifyProvider(config: SpotifyConfig) {
       authorization: "https://accounts.spotify.com/authorize",
       token: "https://accounts.spotify.com/api/token",
     },
-  })
+  });
 }

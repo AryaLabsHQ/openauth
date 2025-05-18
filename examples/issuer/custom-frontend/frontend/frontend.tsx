@@ -1,8 +1,8 @@
 /** @jsx jsx */
 /** @jsxImportSource hono/jsx */
 
-import { Hono } from "hono"
-import { PropsWithChildren } from "hono/jsx"
+import { Hono } from "hono";
+import type { PropsWithChildren } from "hono/jsx";
 
 function Layout(props: PropsWithChildren) {
   return (
@@ -14,7 +14,7 @@ function Layout(props: PropsWithChildren) {
       </head>
       <body>{props.children}</body>
     </html>
-  )
+  );
 }
 
 const app = new Hono()
@@ -29,7 +29,7 @@ const app = new Hono()
           <button type="submit">Request</button>
         </form>
       </Layout>,
-    )
+    );
   })
   .get("/auth/code", async (c) => {
     return c.html(
@@ -38,20 +38,14 @@ const app = new Hono()
         <form method="post" action="http://localhost:3000/code/authorize">
           <input type="hidden" name="action" value="verify" />
           <label for="code">Code</label>
-          <input
-            type="text"
-            name="code"
-            id="code"
-            minLength={6}
-            maxLength={6}
-          />
+          <input type="text" name="code" id="code" minLength={6} maxLength={6} />
           <button type="submit">Verify</button>
         </form>
       </Layout>,
-    )
-  })
+    );
+  });
 
 export default {
   port: 3001,
   fetch: app.fetch,
-}
+};

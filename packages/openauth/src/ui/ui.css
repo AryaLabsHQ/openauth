@@ -36,22 +36,11 @@
     --color-error: var(--color-error-light);
   }
 
-  --color-high: oklch(
-    from var(--color-background) clamp(0, calc((l - 0.714) * -1000), 1) 0 0
-  );
+  --color-high: oklch(from var(--color-background) clamp(0, calc((l - 0.714) * -1000), 1) 0 0);
   --color-low: oklch(from var(--color-background) clamp(0, calc((l - 0.714) * 1000), 1) 0 0);
-  --lightness-high: color-mix(
-    in oklch,
-    var(--color-high) 0%,
-    oklch(var(--color-high) 0 0)
-  );
-  --lightness-low: color-mix(
-    in oklch,
-    var(--color-low) 0%,
-    oklch(var(--color-low) 0 0)
-  );
-  --font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --lightness-high: color-mix(in oklch, var(--color-high) 0%, oklch(var(--color-high) 0 0));
+  --lightness-low: color-mix(in oklch, var(--color-low) 0%, oklch(var(--color-low) 0 0));
+  --font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-scale: 1;
 
   --font-size-xs: calc(0.75rem * var(--font-scale));
@@ -139,24 +128,15 @@
   height: 2.5rem;
   padding: 0 1rem;
   border: 1px solid transparent;
-  --background: oklch(
-    from var(--color-background) calc(l + (-0.06 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.03)) c h
-
-  );
+  --background: oklch(from var(--color-background) calc(l + (-0.06 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.03)) c h);
   background: var(--background);
-  border-color: oklch(
-    from var(--color-background)
-      calc(clamp(0.22, l + (-0.12 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.06), 0.88)) c h
-  );
+  border-color: oklch(from var(--color-background) calc(clamp(0.22, l + (-0.12 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.06), 0.88)) c h);
   border-radius: calc(var(--border-radius) * 0.25rem);
   font-size: var(--font-size-sm);
   outline: none;
 
   &:focus {
-    border-color: oklch(
-      from var(--color-background)
-        calc(clamp(0.3, l + (-0.2 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.1), 0.7)) c h
-    );
+    border-color: oklch(from var(--color-background) calc(clamp(0.3, l + (-0.2 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.1), 0.7)) c h);
   }
 
   &:user-invalid:not(:focus) {
@@ -182,10 +162,7 @@
     background: transparent;
     color: var(--color-high);
     border: 1px solid
-      oklch(
-        from var(--color-background)
-          calc(clamp(0.22, l + (-0.12 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.06), 0.88)) c h
-      );
+      oklch(from var(--color-background) calc(clamp(0.22, l + (-0.12 * clamp(0, calc((l - 0.714) * 1000), 1) + 0.06), 0.88)) c h);
   }
 
   [data-slot="icon"] {
@@ -223,8 +200,12 @@
     background: var(--color-background-success);
     color: var(--color-success);
 
-    [data-slot="icon-success"] { display: block; }
-    [data-slot="icon-danger"] { display: none; }
+    [data-slot="icon-success"] {
+      display: block;
+    }
+    [data-slot="icon-danger"] {
+      display: none;
+    }
   }
 
   &:has([data-slot="message"]:empty) {
@@ -236,7 +217,9 @@
     width: 1rem;
     height: 1rem;
   }
-  [data-slot="icon-success"] { display: none; }
+  [data-slot="icon-success"] {
+    display: none;
+  }
 }
 
 [data-component="form-footer"] {

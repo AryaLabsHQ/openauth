@@ -1,15 +1,12 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import type { subjects } from "@aryalabs/openauth-shared";
+import type { SubjectPayload } from "@aryalabs/openauth/subject";
 import { useRouteLoaderData } from "react-router";
 import type { loader } from "~/root";
-import type { SubjectPayload } from "@aryalabs/openauth/subject";
-import type { subjects } from "@aryalabs/openauth-shared";
+import { Welcome } from "../welcome/welcome";
+import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
+  return [{ title: "New React Router App" }, { name: "description", content: "Welcome to React Router!" }];
 }
 
 export default function Home() {

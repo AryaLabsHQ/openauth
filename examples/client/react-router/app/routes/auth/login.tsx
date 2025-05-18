@@ -1,6 +1,6 @@
-import { Form, redirect } from 'react-router';
-import { client, verifySubject } from '../../auth.server';
-import type { Route } from './+types/login';
+import { Form, redirect } from "react-router";
+import { client, verifySubject } from "../../auth.server";
+import type { Route } from "./+types/login";
 
 export async function action({ request }: Route.ActionArgs) {
   const verified = await verifySubject(request);

@@ -24,15 +24,10 @@
  */
 /** @jsxImportSource hono/jsx */
 
-import {
-  PasswordChangeError,
-  PasswordConfig,
-  PasswordLoginError,
-  PasswordRegisterError,
-} from "../provider/password.js"
-import { Layout } from "./base.js"
-import "./form.js"
-import { FormAlert } from "./form.js"
+import type { PasswordChangeError, PasswordConfig, PasswordLoginError, PasswordRegisterError } from "../provider/password.js";
+import { Layout } from "./base.js";
+import "./form.js";
+import { FormAlert } from "./form.js";
 
 const DEFAULT_COPY = {
   /**
@@ -129,23 +124,19 @@ const DEFAULT_COPY = {
    */
   button_continue: "Continue",
 } satisfies {
-  [key in `error_${
-    | PasswordLoginError["type"]
-    | PasswordRegisterError["type"]
-    | PasswordChangeError["type"]}`]: string
-} & Record<string, string>
+  [key in `error_${PasswordLoginError["type"] | PasswordRegisterError["type"] | PasswordChangeError["type"]}`]: string;
+} & Record<string, string>;
 
-type PasswordUICopy = typeof DEFAULT_COPY
+type PasswordUICopy = typeof DEFAULT_COPY;
 
 /**
  * Configure the password UI.
  */
-export interface PasswordUIOptions
-  extends Pick<PasswordConfig, "sendCode" | "validatePassword"> {
+export interface PasswordUIOptions extends Pick<PasswordConfig, "sendCode" | "validatePassword"> {
   /**
    * Custom copy for the UI.
    */
-  copy?: Partial<PasswordUICopy>
+  copy?: Partial<PasswordUICopy>;
 }
 
 /**
@@ -156,7 +147,7 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
   const copy = {
     ...DEFAULT_COPY,
     ...input.copy,
-  }
+  };
   return {
     validatePassword: input.validatePassword,
     sendCode: input.sendCode,
@@ -197,23 +188,17 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
             </div>
           </form>
         </Layout>
-      )
+      );
       return new Response(jsx.toString(), {
         status: error ? 401 : 200,
         headers: {
           "Content-Type": "text/html",
         },
-      })
+      });
     },
     register: async (_req, state, form, error): Promise<Response> => {
-      const emailError = ["invalid_email", "email_taken"].includes(
-        error?.type || "",
-      )
-      const passwordError = [
-        "invalid_password",
-        "password_mismatch",
-        "validation_error",
-      ].includes(error?.type || "")
+      const emailError = ["invalid_email", "email_taken"].includes(error?.type || "");
+      const passwordError = ["invalid_password", "password_mismatch", "validation_error"].includes(error?.type || "");
       const jsx = (
         <Layout>
           <form data-component="form" method="post">
@@ -245,9 +230,7 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
                   name="password"
                   placeholder={copy.input_password}
                   required
-                  value={
-                    !passwordError ? form?.get("password")?.toString() : ""
-                  }
+                  value={!passwordError ? form?.get("password")?.toString() : ""}
                   autoComplete="new-password"
                 />
                 <input
@@ -289,19 +272,15 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
             )}
           </form>
         </Layout>
-      ) as string
+      ) as string;
       return new Response(jsx.toString(), {
         headers: {
           "Content-Type": "text/html",
         },
-      })
+      });
     },
     change: async (_req, state, form, error): Promise<Response> => {
-      const passwordError = [
-        "invalid_password",
-        "password_mismatch",
-        "validation_error",
-      ].includes(error?.type || "")
+      const passwordError = ["invalid_password", "password_mismatch", "validation_error"].includes(error?.type || "");
       const jsx = (
         <Layout>
           <form data-component="form" method="post" replace>
@@ -353,9 +332,7 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
                   name="password"
                   placeholder={copy.input_password}
                   required
-                  value={
-                    !passwordError ? form?.get("password")?.toString() : ""
-                  }
+                  value={!passwordError ? form?.get("password")?.toString() : ""}
                   autoComplete="new-password"
                 />
                 <input
@@ -363,9 +340,7 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
                   type="password"
                   name="repeat"
                   required
-                  value={
-                    !passwordError ? form?.get("password")?.toString() : ""
-                  }
+                  value={!passwordError ? form?.get("password")?.toString() : ""}
                   placeholder={copy.input_repeat}
                   autoComplete="new-password"
                 />
@@ -391,13 +366,13 @@ export function PasswordUI(input: PasswordUIOptions): PasswordConfig {
             </form>
           )}
         </Layout>
-      )
+      );
       return new Response(jsx.toString(), {
         status: error ? 400 : 200,
         headers: {
           "Content-Type": "text/html",
         },
-      })
+      });
     },
-  }
+  };
 }

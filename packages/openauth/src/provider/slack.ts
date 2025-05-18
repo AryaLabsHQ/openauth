@@ -19,7 +19,7 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
 
 export interface SlackConfig extends Oauth2WrappedConfig {
   /**
@@ -28,7 +28,7 @@ export interface SlackConfig extends Oauth2WrappedConfig {
    * If that workspace has been previously authenticated, the user will be signed in directly,
    * bypassing the consent screen.
    */
-  team: string
+  team: string;
   /**
    * The scopes to request from the user.
    *
@@ -38,7 +38,7 @@ export interface SlackConfig extends Oauth2WrappedConfig {
    * | `profile` | Grants permission to access the user's profile information. |
    * | `openid` | Grants permission to use OpenID Connect to verify the user's identity. |
    */
-  scopes: ("email" | "profile" | "openid")[]
+  scopes: ("email" | "profile" | "openid")[];
 }
 
 /**
@@ -63,5 +63,5 @@ export function SlackProvider(config: SlackConfig) {
       authorization: "https://slack.com/openid/connect/authorize",
       token: "https://slack.com/api/openid.connect.token",
     },
-  })
+  });
 }

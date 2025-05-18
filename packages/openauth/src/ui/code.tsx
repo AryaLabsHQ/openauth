@@ -24,10 +24,10 @@
  */
 /** @jsxImportSource hono/jsx */
 
-import { CodeProviderOptions } from "../provider/code.js"
-import { UnknownStateError } from "../error.js"
-import { Layout } from "./base.js"
-import { FormAlert } from "./form.js"
+import { UnknownStateError } from "../error.js";
+import type { CodeProviderOptions } from "../provider/code.js";
+import { Layout } from "./base.js";
+import { FormAlert } from "./form.js";
 
 const DEFAULT_COPY = {
   /**
@@ -70,9 +70,9 @@ const DEFAULT_COPY = {
    * Copy for the resend button.
    */
   code_resend: "Resend",
-}
+};
 
-export type CodeUICopy = typeof DEFAULT_COPY
+export type CodeUICopy = typeof DEFAULT_COPY;
 
 /**
  * Configure the password UI.
@@ -91,16 +91,16 @@ export interface CodeUIOptions {
    * }
    * ```
    */
-  sendCode: (claims: Record<string, string>, code: string) => Promise<void>
+  sendCode: (claims: Record<string, string>, code: string) => Promise<void>;
   /**
    * Custom copy for the UI.
    */
-  copy?: Partial<CodeUICopy>
+  copy?: Partial<CodeUICopy>;
   /**
    * The mode to use for the input.
    * @default "email"
    */
-  mode?: "email" | "phone"
+  mode?: "email" | "phone";
 }
 
 /**
@@ -111,9 +111,9 @@ export function CodeUI(props: CodeUIOptions): CodeProviderOptions {
   const copy = {
     ...DEFAULT_COPY,
     ...props.copy,
-  }
+  };
 
-  const mode = props.mode ?? "email"
+  const mode = props.mode ?? "email";
 
   return {
     sendCode: props.sendCode,
@@ -123,9 +123,7 @@ export function CodeUI(props: CodeUIOptions): CodeProviderOptions {
         const jsx = (
           <Layout>
             <form data-component="form" method="post">
-              {error?.type === "invalid_claim" && (
-                <FormAlert message={copy.email_invalid} />
-              )}
+              {error?.type === "invalid_claim" && <FormAlert message={copy.email_invalid} />}
               <input type="hidden" name="action" value="request" />
               <input
                 data-component="input"
@@ -140,29 +138,21 @@ export function CodeUI(props: CodeUIOptions): CodeProviderOptions {
             </form>
             <p data-component="form-footer">{copy.code_info}</p>
           </Layout>
-        )
+        );
         return new Response(jsx.toString(), {
           headers: {
             "Content-Type": "text/html",
           },
-        })
+        });
       }
 
       if (state.type === "code") {
         const jsx = (
           <Layout>
             <form data-component="form" class="form" method="post">
-              {error?.type === "invalid_code" && (
-                <FormAlert message={copy.code_invalid} />
-              )}
+              {error?.type === "invalid_code" && <FormAlert message={copy.code_invalid} />}
               {state.type === "code" && (
-                <FormAlert
-                  message={
-                    (state.resend ? copy.code_resent : copy.code_sent) +
-                    state.claims.email
-                  }
-                  color="success"
-                />
+                <FormAlert message={(state.resend ? copy.code_resent : copy.code_sent) + state.claims.email} color="success" />
               )}
               <input type="hidden" name="action" value="verify" />
               <input
@@ -181,32 +171,25 @@ export function CodeUI(props: CodeUIOptions): CodeProviderOptions {
             </form>
             <form method="post">
               {Object.entries(state.claims).map(([key, value]) => (
-                <input
-                  key={key}
-                  type="hidden"
-                  name={key}
-                  value={value}
-                  className="hidden"
-                />
+                <input key={key} type="hidden" name={key} value={value} className="hidden" />
               ))}
               <input type="hidden" name="action" value="request" />
               <div data-component="form-footer">
                 <span>
-                  {copy.code_didnt_get}{" "}
-                  <button data-component="link">{copy.code_resend}</button>
+                  {copy.code_didnt_get} <button data-component="link">{copy.code_resend}</button>
                 </span>
               </div>
             </form>
           </Layout>
-        )
+        );
         return new Response(jsx.toString(), {
           headers: {
             "Content-Type": "text/html",
           },
-        })
+        });
       }
 
-      throw new UnknownStateError()
+      throw new UnknownStateError();
     },
-  }
+  };
 }

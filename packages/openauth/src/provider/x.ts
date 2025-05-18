@@ -17,7 +17,7 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
 
 export interface XProviderConfig extends Oauth2WrappedConfig {}
 
@@ -42,5 +42,5 @@ export function XProvider(config: XProviderConfig) {
       token: "https://api.x.com/2/oauth2/token",
     },
     pkce: true,
-  })
+  });
 }

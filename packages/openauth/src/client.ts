@@ -1,3 +1,4 @@
+import type { StandardSchemaV1 } from "@standard-schema/spec";
 /**
  * Use the OpenAuth client kick off your OAuth flows, exchange tokens, refresh tokens,
  * and verify tokens.
@@ -38,22 +39,10 @@
  *
  * @packageDocumentation
  */
-import {
-  createLocalJWKSet,
-  errors,
-  JSONWebKeySet,
-  jwtVerify,
-  decodeJwt,
-} from "jose"
-import { SubjectSchema } from "./subject.js"
-import type { StandardSchemaV1 } from "@standard-schema/spec"
-import {
-  InvalidAccessTokenError,
-  InvalidAuthorizationCodeError,
-  InvalidRefreshTokenError,
-  InvalidSubjectError,
-} from "./error.js"
-import { generatePKCE } from "./pkce.js"
+import { type JSONWebKeySet, createLocalJWKSet, decodeJwt, errors, jwtVerify } from "jose";
+import { InvalidAccessTokenError, InvalidAuthorizationCodeError, InvalidRefreshTokenError, InvalidSubjectError } from "./error.js";
+import { generatePKCE } from "./pkce.js";
+import type { SubjectSchema } from "./subject.js";
 
 /**
  * The well-known information for an OAuth 2.0 authorization server.
@@ -63,15 +52,15 @@ export interface WellKnown {
   /**
    * The URI to the JWKS endpoint.
    */
-  jwks_uri: string
+  jwks_uri: string;
   /**
    * The URI to the token endpoint.
    */
-  token_endpoint: string
+  token_endpoint: string;
   /**
    * The URI to the authorization endpoint.
    */
-  authorization_endpoint: string
+  authorization_endpoint: string;
 }
 
 /**
@@ -81,23 +70,23 @@ export interface Tokens {
   /**
    * The access token.
    */
-  access: string
+  access: string;
   /**
    * The refresh token.
    */
-  refresh: string
+  refresh: string;
 
   /**
    * The number of seconds until the access token expires.
    */
-  expiresIn: number
+  expiresIn: number;
 }
 
 interface ResponseLike {
-  json(): Promise<unknown>
-  ok: Response["ok"]
+  json(): Promise<unknown>;
+  ok: Response["ok"];
 }
-type FetchLike = (...args: any[]) => Promise<ResponseLike>
+type FetchLike = (...args: any[]) => Promise<ResponseLike>;
 
 /**
  * The challenge that you can use to verify the code.
@@ -106,12 +95,12 @@ export type Challenge = {
   /**
    * The state that was sent to the redirect URI.
    */
-  state: string
+  state: string;
   /**
    * The verifier that was sent to the redirect URI.
    */
-  verifier?: string
-}
+  verifier?: string;
+};
 
 /**
  * Configure the client.
@@ -129,7 +118,7 @@ export interface ClientInput {
    * }
    * ```
    */
-  clientID: string
+  clientID: string;
   /**
    * The URL of your OpenAuth server.
    *
@@ -140,14 +129,14 @@ export interface ClientInput {
    * }
    * ```
    */
-  issuer?: string
+  issuer?: string;
   /**
    * Optionally, override the internally used fetch function.
    *
    * This is useful if you are using a polyfilled fetch function in your application and you
    * want the client to use it too.
    */
-  fetch?: FetchLike
+  fetch?: FetchLike;
 }
 
 export interface AuthorizeOptions {
@@ -162,7 +151,7 @@ export interface AuthorizeOptions {
    *
    * @default false
    */
-  pkce?: boolean
+  pkce?: boolean;
   /**
    * The provider you want to use for the OAuth flow.
    *
@@ -177,7 +166,7 @@ export interface AuthorizeOptions {
    *
    * If there's only one provider configured, the user will be redirected to that.
    */
-  provider?: string
+  provider?: string;
 }
 
 export interface AuthorizeResult {
@@ -190,7 +179,7 @@ export interface AuthorizeResult {
    * sessionStorage.setItem("challenge", JSON.stringify(challenge))
    * ```
    */
-  challenge: Challenge
+  challenge: Challenge;
   /**
    * The URL to redirect the user to. This starts the OAuth flow.
    *
@@ -200,7 +189,7 @@ export interface AuthorizeResult {
    * location.href = url
    * ```
    */
-  url: string
+  url: string;
 }
 
 /**
@@ -210,11 +199,11 @@ export interface ExchangeSuccess {
   /**
    * This is always `false` when the exchange is successful.
    */
-  err: false
+  err: false;
   /**
    * The access and refresh tokens.
    */
-  tokens: Tokens
+  tokens: Tokens;
 }
 
 /**
@@ -231,14 +220,14 @@ export interface ExchangeError {
    * console.log(err instanceof InvalidAuthorizationCodeError)
    *```
    */
-  err: InvalidAuthorizationCodeError
+  err: InvalidAuthorizationCodeError;
 }
 
 export interface RefreshOptions {
   /**
    * Optionally, pass in the access token.
    */
-  access?: string
+  access?: string;
 }
 
 /**
@@ -248,13 +237,13 @@ export interface RefreshSuccess {
   /**
    * This is always `false` when the refresh is successful.
    */
-  err: false
+  err: false;
   /**
    * Returns the refreshed tokens only if they've been refreshed.
    *
    * If they are still valid, this will be `undefined`.
    */
-  tokens?: Tokens
+  tokens?: Tokens;
 }
 
 /**
@@ -271,7 +260,7 @@ export interface RefreshError {
    * console.log(err instanceof InvalidRefreshTokenError)
    *```
    */
-  err: InvalidRefreshTokenError | InvalidAccessTokenError
+  err: InvalidRefreshTokenError | InvalidAccessTokenError;
 }
 
 export interface VerifyOptions {
@@ -280,47 +269,47 @@ export interface VerifyOptions {
    *
    * If passed in, this will automatically refresh the access token if it has expired.
    */
-  refresh?: string
+  refresh?: string;
   /**
    * @internal
    */
-  issuer?: string
+  issuer?: string;
   /**
    * @internal
    */
-  audience?: string
+  audience?: string;
   /**
    * Optionally, override the internally used fetch function.
    *
    * This is useful if you are using a polyfilled fetch function in your application and you
    * want the client to use it too.
    */
-  fetch?: FetchLike
+  fetch?: FetchLike;
 }
 
 export interface VerifyResult<T extends SubjectSchema> {
   /**
    * This is always `undefined` when the verify is successful.
    */
-  err?: undefined
+  err?: undefined;
   /**
    * Returns the refreshed tokens only if they’ve been refreshed.
    *
    * If they are still valid, this will be undefined.
    */
-  tokens?: Tokens
+  tokens?: Tokens;
   /**
    * @internal
    */
-  aud: string
+  aud: string;
   /**
    * The decoded subjects from the access token.
    *
    * Has the same shape as the subjects you defined when creating the issuer.
    */
   subject: {
-    [type in keyof T]: { type: type; properties: StandardSchemaV1.InferOutput<T[type]> }
-  }[keyof T]
+    [type in keyof T]: { type: type; properties: StandardSchemaV1.InferOutput<T[type]> };
+  }[keyof T];
 }
 
 /**
@@ -337,7 +326,7 @@ export interface VerifyError {
    * console.log(err instanceof InvalidRefreshTokenError)
    *```
    */
-  err: InvalidRefreshTokenError | InvalidAccessTokenError
+  err: InvalidRefreshTokenError | InvalidAccessTokenError;
 }
 
 /**
@@ -376,11 +365,7 @@ export interface Client {
    *
    * This returns a redirect URL and a challenge that you need to use later to verify the code.
    */
-  authorize(
-    redirectURI: string,
-    response: "code" | "token",
-    opts?: AuthorizeOptions,
-  ): Promise<AuthorizeResult>
+  authorize(redirectURI: string, response: "code" | "token", opts?: AuthorizeOptions): Promise<AuthorizeResult>;
   /**
    * Exchange the code for access and refresh tokens.
    *
@@ -432,11 +417,7 @@ export interface Client {
    * const { access, refresh } = exchanged.tokens
    * ```
    */
-  exchange(
-    code: string,
-    redirectURI: string,
-    verifier?: string,
-  ): Promise<ExchangeSuccess | ExchangeError>
+  exchange(code: string, redirectURI: string, verifier?: string): Promise<ExchangeSuccess | ExchangeError>;
   /**
    * Refreshes the tokens if they have expired. This is used in an SPA app to maintain the
    * session, without logging the user out.
@@ -478,10 +459,7 @@ export interface Client {
    * }
    * ```
    */
-  refresh(
-    refresh: string,
-    opts?: RefreshOptions,
-  ): Promise<RefreshSuccess | RefreshError>
+  refresh(refresh: string, opts?: RefreshOptions): Promise<RefreshSuccess | RefreshError>;
   /**
    * Verify the token in the incoming request.
    *
@@ -532,11 +510,7 @@ export interface Client {
    * }
    * ```
    */
-  verify<T extends SubjectSchema>(
-    subjects: T,
-    token: string,
-    options?: VerifyOptions,
-  ): Promise<VerifyResult<T> | VerifyError>
+  verify<T extends SubjectSchema>(subjects: T, token: string, options?: VerifyOptions): Promise<VerifyResult<T> | VerifyError>;
 }
 
 /**
@@ -545,59 +519,51 @@ export interface Client {
  * @param input - Configure the client.
  */
 export function createClient(input: ClientInput): Client {
-  const jwksCache = new Map<string, ReturnType<typeof createLocalJWKSet>>()
-  const issuerCache = new Map<string, WellKnown>()
-  const issuer = input.issuer || process.env.OPENAUTH_ISSUER
-  if (!issuer) throw new Error("No issuer")
-  const f = input.fetch ?? fetch
+  const jwksCache = new Map<string, ReturnType<typeof createLocalJWKSet>>();
+  const issuerCache = new Map<string, WellKnown>();
+  const issuer = input.issuer || process.env.OPENAUTH_ISSUER;
+  if (!issuer) throw new Error("No issuer");
+  const f = input.fetch ?? fetch;
 
   async function getIssuer() {
-    const cached = issuerCache.get(issuer!)
-    if (cached) return cached
-    const wellKnown = (await (f || fetch)(
-      `${issuer}/.well-known/oauth-authorization-server`,
-    ).then((r) => r.json())) as WellKnown
-    issuerCache.set(issuer!, wellKnown)
-    return wellKnown
+    const cached = issuerCache.get(issuer!);
+    if (cached) return cached;
+    const wellKnown = (await (f || fetch)(`${issuer}/.well-known/oauth-authorization-server`).then((r) => r.json())) as WellKnown;
+    issuerCache.set(issuer!, wellKnown);
+    return wellKnown;
   }
 
   async function getJWKS() {
-    const wk = await getIssuer()
-    const cached = jwksCache.get(issuer!)
-    if (cached) return cached
-    const keyset = (await (f || fetch)(wk.jwks_uri).then((r) =>
-      r.json(),
-    )) as JSONWebKeySet
-    const result = createLocalJWKSet(keyset)
-    jwksCache.set(issuer!, result)
-    return result
+    const wk = await getIssuer();
+    const cached = jwksCache.get(issuer!);
+    if (cached) return cached;
+    const keyset = (await (f || fetch)(wk.jwks_uri).then((r) => r.json())) as JSONWebKeySet;
+    const result = createLocalJWKSet(keyset);
+    jwksCache.set(issuer!, result);
+    return result;
   }
 
   const result = {
-    async authorize(
-      redirectURI: string,
-      response: "code" | "token",
-      opts?: AuthorizeOptions,
-    ) {
-      const result = new URL(issuer + "/authorize")
+    async authorize(redirectURI: string, response: "code" | "token", opts?: AuthorizeOptions) {
+      const result = new URL(issuer + "/authorize");
       const challenge: Challenge = {
         state: crypto.randomUUID(),
-      }
-      result.searchParams.set("client_id", input.clientID)
-      result.searchParams.set("redirect_uri", redirectURI)
-      result.searchParams.set("response_type", response)
-      result.searchParams.set("state", challenge.state)
-      if (opts?.provider) result.searchParams.set("provider", opts.provider)
+      };
+      result.searchParams.set("client_id", input.clientID);
+      result.searchParams.set("redirect_uri", redirectURI);
+      result.searchParams.set("response_type", response);
+      result.searchParams.set("state", challenge.state);
+      if (opts?.provider) result.searchParams.set("provider", opts.provider);
       if (opts?.pkce && response === "code") {
-        const pkce = await generatePKCE()
-        result.searchParams.set("code_challenge_method", "S256")
-        result.searchParams.set("code_challenge", pkce.challenge)
-        challenge.verifier = pkce.verifier
+        const pkce = await generatePKCE();
+        result.searchParams.set("code_challenge_method", "S256");
+        result.searchParams.set("code_challenge", pkce.challenge);
+        challenge.verifier = pkce.verifier;
       }
       return {
         challenge,
         url: result.toString(),
-      }
+      };
     },
     /**
      * @deprecated use `authorize` instead, it will do pkce by default unless disabled with `opts.pkce = false`
@@ -605,24 +571,20 @@ export function createClient(input: ClientInput): Client {
     async pkce(
       redirectURI: string,
       opts?: {
-        provider?: string
+        provider?: string;
       },
     ) {
-      const result = new URL(issuer + "/authorize")
-      if (opts?.provider) result.searchParams.set("provider", opts.provider)
-      result.searchParams.set("client_id", input.clientID)
-      result.searchParams.set("redirect_uri", redirectURI)
-      result.searchParams.set("response_type", "code")
-      const pkce = await generatePKCE()
-      result.searchParams.set("code_challenge_method", "S256")
-      result.searchParams.set("code_challenge", pkce.challenge)
-      return [pkce.verifier, result.toString()]
+      const result = new URL(issuer + "/authorize");
+      if (opts?.provider) result.searchParams.set("provider", opts.provider);
+      result.searchParams.set("client_id", input.clientID);
+      result.searchParams.set("redirect_uri", redirectURI);
+      result.searchParams.set("response_type", "code");
+      const pkce = await generatePKCE();
+      result.searchParams.set("code_challenge_method", "S256");
+      result.searchParams.set("code_challenge", pkce.challenge);
+      return [pkce.verifier, result.toString()];
     },
-    async exchange(
-      code: string,
-      redirectURI: string,
-      verifier?: string,
-    ): Promise<ExchangeSuccess | ExchangeError> {
+    async exchange(code: string, redirectURI: string, verifier?: string): Promise<ExchangeSuccess | ExchangeError> {
       const tokens = await f(issuer + "/token", {
         method: "POST",
         headers: {
@@ -635,12 +597,12 @@ export function createClient(input: ClientInput): Client {
           client_id: input.clientID,
           code_verifier: verifier || "",
         }).toString(),
-      })
-      const json = (await tokens.json()) as any
+      });
+      const json = (await tokens.json()) as any;
       if (!tokens.ok) {
         return {
           err: new InvalidAuthorizationCodeError(),
-        }
+        };
       }
       return {
         err: false,
@@ -649,24 +611,21 @@ export function createClient(input: ClientInput): Client {
           refresh: json.refresh_token as string,
           expiresIn: json.expires_in as number,
         },
-      }
+      };
     },
-    async refresh(
-      refresh: string,
-      opts?: RefreshOptions,
-    ): Promise<RefreshSuccess | RefreshError> {
+    async refresh(refresh: string, opts?: RefreshOptions): Promise<RefreshSuccess | RefreshError> {
       if (opts && opts.access) {
-        const decoded = decodeJwt(opts.access)
+        const decoded = decodeJwt(opts.access);
         if (!decoded) {
           return {
             err: new InvalidAccessTokenError(),
-          }
+          };
         }
         // allow 30s window for expiration
         if ((decoded.exp || 0) > Date.now() / 1000 + 30) {
           return {
             err: false,
-          }
+          };
         }
       }
       const tokens = await f(issuer + "/token", {
@@ -678,12 +637,12 @@ export function createClient(input: ClientInput): Client {
           grant_type: "refresh_token",
           refresh_token: refresh,
         }).toString(),
-      })
-      const json = (await tokens.json()) as any
+      });
+      const json = (await tokens.json()) as any;
       if (!tokens.ok) {
         return {
           err: new InvalidRefreshTokenError(),
-        }
+        };
       }
       return {
         err: false,
@@ -692,25 +651,19 @@ export function createClient(input: ClientInput): Client {
           refresh: json.refresh_token as string,
           expiresIn: json.expires_in as number,
         },
-      }
+      };
     },
-    async verify<T extends SubjectSchema>(
-      subjects: T,
-      token: string,
-      options?: VerifyOptions,
-    ): Promise<VerifyResult<T> | VerifyError> {
-      const jwks = await getJWKS()
+    async verify<T extends SubjectSchema>(subjects: T, token: string, options?: VerifyOptions): Promise<VerifyResult<T> | VerifyError> {
+      const jwks = await getJWKS();
       try {
         const result = await jwtVerify<{
-          mode: "access"
-          type: keyof T
-          properties: StandardSchemaV1.InferInput<T[keyof T]>
+          mode: "access";
+          type: keyof T;
+          properties: StandardSchemaV1.InferInput<T[keyof T]>;
         }>(token, jwks, {
           issuer,
-        })
-        const validated = await subjects[result.payload.type][
-          "~standard"
-        ].validate(result.payload.properties)
+        });
+        const validated = await subjects[result.payload.type]["~standard"].validate(result.payload.properties);
         if (!validated.issues && result.payload.mode === "access")
           return {
             aud: result.payload.aud as string,
@@ -718,32 +671,28 @@ export function createClient(input: ClientInput): Client {
               type: result.payload.type,
               properties: validated.value,
             } as any,
-          }
+          };
         return {
           err: new InvalidSubjectError(),
-        }
+        };
       } catch (e) {
         if (e instanceof errors.JWTExpired && options?.refresh) {
-          const refreshed = await this.refresh(options.refresh)
-          if (refreshed.err) return refreshed
-          const verified = await result.verify(
-            subjects,
-            refreshed.tokens!.access,
-            {
-              refresh: refreshed.tokens!.refresh,
-              issuer,
-              fetch: options?.fetch,
-            },
-          )
-          if (verified.err) return verified
-          verified.tokens = refreshed.tokens
-          return verified
+          const refreshed = await this.refresh(options.refresh);
+          if (refreshed.err) return refreshed;
+          const verified = await result.verify(subjects, refreshed.tokens!.access, {
+            refresh: refreshed.tokens!.refresh,
+            issuer,
+            fetch: options?.fetch,
+          });
+          if (verified.err) return verified;
+          verified.tokens = refreshed.tokens;
+          return verified;
         }
         return {
           err: new InvalidAccessTokenError(),
-        }
+        };
       }
     },
-  }
-  return result
+  };
+  return result;
 }

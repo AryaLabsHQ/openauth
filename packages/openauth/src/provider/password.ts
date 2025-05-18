@@ -1,3 +1,4 @@
+import type { StandardSchemaV1 } from "@standard-schema/spec";
 /**
  * Configures a provider that supports username and password authentication. This is usually
  * paired with the `PasswordUI`.
@@ -37,29 +38,28 @@
  *
  * @packageDocumentation
  */
-import { UnknownStateError } from "../error.js"
-import { Storage } from "../storage/storage.js"
-import { Provider } from "./provider.js"
-import { generateUnbiasedDigits, timingSafeCompare } from "../random.js"
-import { StandardSchemaV1 } from "@standard-schema/spec"
+import { UnknownStateError } from "../error.js";
+import { generateUnbiasedDigits, timingSafeCompare } from "../random.js";
+import { Storage } from "../storage/storage.js";
+import type { Provider } from "./provider.js";
 
 /**
  * @internal
  */
 export interface PasswordHasher<T> {
-  hash(password: string): Promise<T>
-  verify(password: string, compare: T): Promise<boolean>
+  hash(password: string): Promise<T>;
+  verify(password: string, compare: T): Promise<boolean>;
 }
 
 export interface PasswordConfig {
   /**
    * @internal
    */
-  length?: number
+  length?: number;
   /**
    * @internal
    */
-  hasher?: PasswordHasher<any>
+  hasher?: PasswordHasher<any>;
   /**
    * The request handler to generate the UI for the login screen.
    *
@@ -72,11 +72,7 @@ export interface PasswordConfig {
    * Expects the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
    * in return.
    */
-  login: (
-    req: Request,
-    form?: FormData,
-    error?: PasswordLoginError,
-  ) => Promise<Response>
+  login: (req: Request, form?: FormData, error?: PasswordLoginError) => Promise<Response>;
   /**
    * The request handler to generate the UI for the register screen.
    *
@@ -89,12 +85,7 @@ export interface PasswordConfig {
    * Expects the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
    * in return.
    */
-  register: (
-    req: Request,
-    state: PasswordRegisterState,
-    form?: FormData,
-    error?: PasswordRegisterError,
-  ) => Promise<Response>
+  register: (req: Request, state: PasswordRegisterState, form?: FormData, error?: PasswordRegisterError) => Promise<Response>;
   /**
    * The request handler to generate the UI for the change password screen.
    *
@@ -107,12 +98,7 @@ export interface PasswordConfig {
    * Expects the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
    * in return.
    */
-  change: (
-    req: Request,
-    state: PasswordChangeState,
-    form?: FormData,
-    error?: PasswordChangeError,
-  ) => Promise<Response>
+  change: (req: Request, state: PasswordChangeState, form?: FormData, error?: PasswordChangeError) => Promise<Response>;
   /**
    * Callback to send the confirmation pin code to the user.
    *
@@ -125,7 +111,7 @@ export interface PasswordConfig {
    * }
    * ```
    */
-  sendCode: (email: string, code: string) => Promise<void>
+  sendCode: (email: string, code: string) => Promise<void>;
   /**
    * Callback to validate the password on sign up and password reset.
    *
@@ -138,9 +124,7 @@ export interface PasswordConfig {
    * }
    * ```
    */
-  validatePassword?:
-    | StandardSchemaV1
-    | ((password: string) => Promise<string | undefined> | string | undefined)
+  validatePassword?: StandardSchemaV1 | ((password: string) => Promise<string | undefined> | string | undefined);
 }
 
 /**
@@ -153,14 +137,14 @@ export interface PasswordConfig {
  */
 export type PasswordRegisterState =
   | {
-      type: "start"
+      type: "start";
     }
   | {
-      type: "code"
-      code: string
-      email: string
-      password: string
-    }
+      type: "code";
+      code: string;
+      email: string;
+      password: string;
+    };
 
 /**
  * The errors that can happen on the register screen.
@@ -175,24 +159,24 @@ export type PasswordRegisterState =
  */
 export type PasswordRegisterError =
   | {
-      type: "invalid_code"
+      type: "invalid_code";
     }
   | {
-      type: "email_taken"
+      type: "email_taken";
     }
   | {
-      type: "invalid_email"
+      type: "invalid_email";
     }
   | {
-      type: "invalid_password"
+      type: "invalid_password";
     }
   | {
-      type: "password_mismatch"
+      type: "password_mismatch";
     }
   | {
-      type: "validation_error"
-      message?: string
-    }
+      type: "validation_error";
+      message?: string;
+    };
 
 /**
  * The state of the password change flow.
@@ -205,20 +189,20 @@ export type PasswordRegisterError =
  */
 export type PasswordChangeState =
   | {
-      type: "start"
-      redirect: string
+      type: "start";
+      redirect: string;
     }
   | {
-      type: "code"
-      code: string
-      email: string
-      redirect: string
+      type: "code";
+      code: string;
+      email: string;
+      redirect: string;
     }
   | {
-      type: "update"
-      redirect: string
-      email: string
-    }
+      type: "update";
+      redirect: string;
+      email: string;
+    };
 
 /**
  * The errors that can happen on the change password screen.
@@ -232,21 +216,21 @@ export type PasswordChangeState =
  */
 export type PasswordChangeError =
   | {
-      type: "invalid_email"
+      type: "invalid_email";
     }
   | {
-      type: "invalid_code"
+      type: "invalid_code";
     }
   | {
-      type: "invalid_password"
+      type: "invalid_password";
     }
   | {
-      type: "password_mismatch"
+      type: "password_mismatch";
     }
   | {
-      type: "validation_error"
-      message: string
-    }
+      type: "validation_error";
+      message: string;
+    };
 
 /**
  * The errors that can happen on the login screen.
@@ -258,41 +242,32 @@ export type PasswordChangeError =
  */
 export type PasswordLoginError =
   | {
-      type: "invalid_password"
+      type: "invalid_password";
     }
   | {
-      type: "invalid_email"
-    }
+      type: "invalid_email";
+    };
 
-export function PasswordProvider(
-  config: PasswordConfig,
-): Provider<{ email: string }> {
-  const hasher = config.hasher ?? ScryptHasher()
+export function PasswordProvider(config: PasswordConfig): Provider<{ email: string }> {
+  const hasher = config.hasher ?? ScryptHasher();
   function generate() {
-    return generateUnbiasedDigits(6)
+    return generateUnbiasedDigits(6);
   }
   return {
     type: "password",
     init(routes, ctx) {
-      routes.get("/authorize", async (c) =>
-        ctx.forward(c, await config.login(c.req.raw)),
-      )
+      routes.get("/authorize", async (c) => ctx.forward(c, await config.login(c.req.raw)));
 
       routes.post("/authorize", async (c) => {
-        const fd = await c.req.formData()
+        const fd = await c.req.formData();
         async function error(err: PasswordLoginError) {
-          return ctx.forward(c, await config.login(c.req.raw, fd, err))
+          return ctx.forward(c, await config.login(c.req.raw, fd, err));
         }
-        const email = fd.get("email")?.toString()?.toLowerCase()
-        if (!email) return error({ type: "invalid_email" })
-        const hash = await Storage.get<HashedPassword>(ctx.storage, [
-          "email",
-          email,
-          "password",
-        ])
-        const password = fd.get("password")?.toString()
-        if (!password || !hash || !(await hasher.verify(password, hash)))
-          return error({ type: "invalid_password" })
+        const email = fd.get("email")?.toString()?.toLowerCase();
+        if (!email) return error({ type: "invalid_email" });
+        const hash = await Storage.get<HashedPassword>(ctx.storage, ["email", email, "password"]);
+        const password = fd.get("password")?.toString();
+        if (!password || !hash || !(await hasher.verify(password, hash))) return error({ type: "invalid_password" });
         return ctx.success(
           c,
           {
@@ -300,269 +275,204 @@ export function PasswordProvider(
           },
           {
             invalidate: async (subject) => {
-              await Storage.set(
-                ctx.storage,
-                ["email", email, "subject"],
-                subject,
-              )
+              await Storage.set(ctx.storage, ["email", email, "subject"], subject);
             },
           },
-        )
-      })
+        );
+      });
 
       routes.get("/register", async (c) => {
         const state: PasswordRegisterState = {
           type: "start",
-        }
-        await ctx.set(c, "provider", 60 * 60 * 24, state)
-        return ctx.forward(c, await config.register(c.req.raw, state))
-      })
+        };
+        await ctx.set(c, "provider", 60 * 60 * 24, state);
+        return ctx.forward(c, await config.register(c.req.raw, state));
+      });
 
       routes.post("/register", async (c) => {
-        const fd = await c.req.formData()
-        const email = fd.get("email")?.toString()?.toLowerCase()
-        const action = fd.get("action")?.toString()
-        const provider = await ctx.get<PasswordRegisterState>(c, "provider")
+        const fd = await c.req.formData();
+        const email = fd.get("email")?.toString()?.toLowerCase();
+        const action = fd.get("action")?.toString();
+        const provider = await ctx.get<PasswordRegisterState>(c, "provider");
 
-        async function transition(
-          next: PasswordRegisterState,
-          err?: PasswordRegisterError,
-        ) {
-          await ctx.set<PasswordRegisterState>(
-            c,
-            "provider",
-            60 * 60 * 24,
-            next,
-          )
-          return ctx.forward(c, await config.register(c.req.raw, next, fd, err))
+        async function transition(next: PasswordRegisterState, err?: PasswordRegisterError) {
+          await ctx.set<PasswordRegisterState>(c, "provider", 60 * 60 * 24, next);
+          return ctx.forward(c, await config.register(c.req.raw, next, fd, err));
         }
 
         if (action === "register" && provider.type === "start") {
-          const password = fd.get("password")?.toString()
-          const repeat = fd.get("repeat")?.toString()
-          if (!email) return transition(provider, { type: "invalid_email" })
-          if (!password)
-            return transition(provider, { type: "invalid_password" })
-          if (password !== repeat)
-            return transition(provider, { type: "password_mismatch" })
+          const password = fd.get("password")?.toString();
+          const repeat = fd.get("repeat")?.toString();
+          if (!email) return transition(provider, { type: "invalid_email" });
+          if (!password) return transition(provider, { type: "invalid_password" });
+          if (password !== repeat) return transition(provider, { type: "password_mismatch" });
           if (config.validatePassword) {
-            let validationError: string | undefined
+            let validationError: string | undefined;
             try {
               if (typeof config.validatePassword === "function") {
-                validationError = await config.validatePassword(password)
+                validationError = await config.validatePassword(password);
               } else {
-                const res =
-                  await config.validatePassword["~standard"].validate(password)
+                const res = await config.validatePassword["~standard"].validate(password);
 
                 if (res.issues?.length) {
-                  throw new Error(
-                    res.issues.map((issue) => issue.message).join(", "),
-                  )
+                  throw new Error(res.issues.map((issue) => issue.message).join(", "));
                 }
               }
             } catch (error) {
-              validationError =
-                error instanceof Error ? error.message : undefined
+              validationError = error instanceof Error ? error.message : undefined;
             }
             if (validationError)
               return transition(provider, {
                 type: "validation_error",
                 message: validationError,
-              })
+              });
           }
-          const existing = await Storage.get(ctx.storage, [
-            "email",
-            email,
-            "password",
-          ])
-          if (existing) return transition(provider, { type: "email_taken" })
-          const code = generate()
-          await config.sendCode(email, code)
+          const existing = await Storage.get(ctx.storage, ["email", email, "password"]);
+          if (existing) return transition(provider, { type: "email_taken" });
+          const code = generate();
+          await config.sendCode(email, code);
           return transition({
             type: "code",
             code,
             password: await hasher.hash(password),
             email,
-          })
+          });
         }
 
         if (action === "register" && provider.type === "code") {
-          const code = generate()
-          await config.sendCode(provider.email, code)
+          const code = generate();
+          await config.sendCode(provider.email, code);
           return transition({
             type: "code",
             code,
             password: provider.password,
             email: provider.email,
-          })
+          });
         }
 
         if (action === "verify" && provider.type === "code") {
-          const code = fd.get("code")?.toString()
-          if (!code || !timingSafeCompare(code, provider.code))
-            return transition(provider, { type: "invalid_code" })
-          const existing = await Storage.get(ctx.storage, [
-            "email",
-            provider.email,
-            "password",
-          ])
-          if (existing)
-            return transition({ type: "start" }, { type: "email_taken" })
-          await Storage.set(
-            ctx.storage,
-            ["email", provider.email, "password"],
-            provider.password,
-          )
+          const code = fd.get("code")?.toString();
+          if (!code || !timingSafeCompare(code, provider.code)) return transition(provider, { type: "invalid_code" });
+          const existing = await Storage.get(ctx.storage, ["email", provider.email, "password"]);
+          if (existing) return transition({ type: "start" }, { type: "email_taken" });
+          await Storage.set(ctx.storage, ["email", provider.email, "password"], provider.password);
           return ctx.success(c, {
             email: provider.email,
-          })
+          });
         }
 
-        return transition({ type: "start" })
-      })
+        return transition({ type: "start" });
+      });
 
       routes.get("/change", async (c) => {
-        let redirect =
-          c.req.query("redirect_uri") || getRelativeUrl(c, "./authorize")
+        const redirect = c.req.query("redirect_uri") || getRelativeUrl(c, "./authorize");
         const state: PasswordChangeState = {
           type: "start",
           redirect,
-        }
-        await ctx.set(c, "provider", 60 * 60 * 24, state)
-        return ctx.forward(c, await config.change(c.req.raw, state))
-      })
+        };
+        await ctx.set(c, "provider", 60 * 60 * 24, state);
+        return ctx.forward(c, await config.change(c.req.raw, state));
+      });
 
       routes.post("/change", async (c) => {
-        const fd = await c.req.formData()
-        const action = fd.get("action")?.toString()
-        const provider = await ctx.get<PasswordChangeState>(c, "provider")
-        if (!provider) throw new UnknownStateError()
+        const fd = await c.req.formData();
+        const action = fd.get("action")?.toString();
+        const provider = await ctx.get<PasswordChangeState>(c, "provider");
+        if (!provider) throw new UnknownStateError();
 
-        async function transition(
-          next: PasswordChangeState,
-          err?: PasswordChangeError,
-        ) {
-          await ctx.set<PasswordChangeState>(c, "provider", 60 * 60 * 24, next)
-          return ctx.forward(c, await config.change(c.req.raw, next, fd, err))
+        async function transition(next: PasswordChangeState, err?: PasswordChangeError) {
+          await ctx.set<PasswordChangeState>(c, "provider", 60 * 60 * 24, next);
+          return ctx.forward(c, await config.change(c.req.raw, next, fd, err));
         }
 
         if (action === "code") {
-          const email = fd.get("email")?.toString()?.toLowerCase()
-          if (!email)
-            return transition(
-              { type: "start", redirect: provider.redirect },
-              { type: "invalid_email" },
-            )
-          const code = generate()
-          await config.sendCode(email, code)
+          const email = fd.get("email")?.toString()?.toLowerCase();
+          if (!email) return transition({ type: "start", redirect: provider.redirect }, { type: "invalid_email" });
+          const code = generate();
+          await config.sendCode(email, code);
 
           return transition({
             type: "code",
             code,
             email,
             redirect: provider.redirect,
-          })
+          });
         }
 
         if (action === "verify" && provider.type === "code") {
-          const code = fd.get("code")?.toString()
-          if (!code || !timingSafeCompare(code, provider.code))
-            return transition(provider, { type: "invalid_code" })
+          const code = fd.get("code")?.toString();
+          if (!code || !timingSafeCompare(code, provider.code)) return transition(provider, { type: "invalid_code" });
           return transition({
             type: "update",
             email: provider.email,
             redirect: provider.redirect,
-          })
+          });
         }
 
         if (action === "update" && provider.type === "update") {
-          const existing = await Storage.get(ctx.storage, [
-            "email",
-            provider.email,
-            "password",
-          ])
-          if (!existing) return c.redirect(provider.redirect, 302)
+          const existing = await Storage.get(ctx.storage, ["email", provider.email, "password"]);
+          if (!existing) return c.redirect(provider.redirect, 302);
 
-          const password = fd.get("password")?.toString()
-          const repeat = fd.get("repeat")?.toString()
-          if (!password)
-            return transition(provider, { type: "invalid_password" })
-          if (password !== repeat)
-            return transition(provider, { type: "password_mismatch" })
+          const password = fd.get("password")?.toString();
+          const repeat = fd.get("repeat")?.toString();
+          if (!password) return transition(provider, { type: "invalid_password" });
+          if (password !== repeat) return transition(provider, { type: "password_mismatch" });
 
           if (config.validatePassword) {
-            let validationError: string | undefined
+            let validationError: string | undefined;
             try {
               if (typeof config.validatePassword === "function") {
-                validationError = await config.validatePassword(password)
+                validationError = await config.validatePassword(password);
               } else {
-                const res =
-                  await config.validatePassword["~standard"].validate(password)
+                const res = await config.validatePassword["~standard"].validate(password);
 
                 if (res.issues?.length) {
-                  throw new Error(
-                    res.issues.map((issue) => issue.message).join(", "),
-                  )
+                  throw new Error(res.issues.map((issue) => issue.message).join(", "));
                 }
               }
             } catch (error) {
-              validationError =
-                error instanceof Error ? error.message : undefined
+              validationError = error instanceof Error ? error.message : undefined;
             }
             if (validationError)
               return transition(provider, {
                 type: "validation_error",
                 message: validationError,
-              })
+              });
           }
 
-          await Storage.set(
-            ctx.storage,
-            ["email", provider.email, "password"],
-            await hasher.hash(password),
-          )
-          const subject = await Storage.get<string>(ctx.storage, [
-            "email",
-            provider.email,
-            "subject",
-          ])
-          if (subject) await ctx.invalidate(subject)
+          await Storage.set(ctx.storage, ["email", provider.email, "password"], await hasher.hash(password));
+          const subject = await Storage.get<string>(ctx.storage, ["email", provider.email, "subject"]);
+          if (subject) await ctx.invalidate(subject);
 
-          return c.redirect(provider.redirect, 302)
+          return c.redirect(provider.redirect, 302);
         }
 
-        return transition({ type: "start", redirect: provider.redirect })
-      })
+        return transition({ type: "start", redirect: provider.redirect });
+      });
     },
-  }
+  };
 }
 
-import * as jose from "jose"
-import { TextEncoder } from "node:util"
+import { TextEncoder } from "node:util";
+import * as jose from "jose";
 
-interface HashedPassword {}
+type HashedPassword = {};
 
 /**
  * @internal
  */
 export function PBKDF2Hasher(opts?: { iterations?: number }): PasswordHasher<{
-  hash: string
-  salt: string
-  iterations: number
+  hash: string;
+  salt: string;
+  iterations: number;
 }> {
-  const iterations = opts?.iterations ?? 600000
+  const iterations = opts?.iterations ?? 600000;
   return {
     async hash(password) {
-      const encoder = new TextEncoder()
-      const bytes = encoder.encode(password)
-      const salt = crypto.getRandomValues(new Uint8Array(16))
-      const keyMaterial = await crypto.subtle.importKey(
-        "raw",
-        bytes,
-        "PBKDF2",
-        false,
-        ["deriveBits"],
-      )
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(password);
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const keyMaterial = await crypto.subtle.importKey("raw", bytes, "PBKDF2", false, ["deriveBits"]);
       const hash = await crypto.subtle.deriveBits(
         {
           name: "PBKDF2",
@@ -572,73 +482,67 @@ export function PBKDF2Hasher(opts?: { iterations?: number }): PasswordHasher<{
         },
         keyMaterial,
         256,
-      )
-      const hashBase64 = jose.base64url.encode(new Uint8Array(hash))
-      const saltBase64 = jose.base64url.encode(salt)
+      );
+      const hashBase64 = jose.base64url.encode(new Uint8Array(hash));
+      const saltBase64 = jose.base64url.encode(salt);
       return {
         hash: hashBase64,
         salt: saltBase64,
         iterations,
-      }
+      };
     },
     async verify(password, compare) {
-      const encoder = new TextEncoder()
-      const passwordBytes = encoder.encode(password)
-      const salt = jose.base64url.decode(compare.salt)
+      const encoder = new TextEncoder();
+      const passwordBytes = encoder.encode(password);
+      const salt = jose.base64url.decode(compare.salt);
       const params = {
         name: "PBKDF2",
         hash: "SHA-256",
         salt,
         iterations: compare.iterations,
-      }
-      const keyMaterial = await crypto.subtle.importKey(
-        "raw",
-        passwordBytes,
-        "PBKDF2",
-        false,
-        ["deriveBits"],
-      )
-      const hash = await crypto.subtle.deriveBits(params, keyMaterial, 256)
-      const hashBase64 = jose.base64url.encode(new Uint8Array(hash))
-      return hashBase64 === compare.hash
+      };
+      const keyMaterial = await crypto.subtle.importKey("raw", passwordBytes, "PBKDF2", false, ["deriveBits"]);
+      const hash = await crypto.subtle.deriveBits(params, keyMaterial, 256);
+      const hashBase64 = jose.base64url.encode(new Uint8Array(hash));
+      return hashBase64 === compare.hash;
     },
-  }
+  };
 }
-import { timingSafeEqual, randomBytes, scrypt } from "node:crypto"
-import { getRelativeUrl } from "../util.js"
+import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+import { getRelativeUrl } from "../util.js";
 
 /**
  * @internal
  */
 export function ScryptHasher(opts?: {
-  N?: number
-  r?: number
-  p?: number
+  N?: number;
+  r?: number;
+  p?: number;
 }): PasswordHasher<{
-  hash: string
-  salt: string
-  N: number
-  r: number
-  p: number
+  hash: string;
+  salt: string;
+  N: number;
+  r: number;
+  p: number;
 }> {
-  const N = opts?.N ?? 16384
-  const r = opts?.r ?? 8
-  const p = opts?.p ?? 1
+  const N = opts?.N ?? 16384;
+  const r = opts?.r ?? 8;
+  const p = opts?.p ?? 1;
 
   return {
     async hash(password) {
-      const salt = randomBytes(16)
-      const keyLength = 32 // 256 bits
+      const salt = randomBytes(16);
+      const keyLength = 32; // 256 bits
 
       const derivedKey = await new Promise<Buffer>((resolve, reject) => {
         scrypt(password, salt, keyLength, { N, r, p }, (err, derivedKey) => {
-          if (err) reject(err)
-          else resolve(derivedKey)
-        })
-      })
+          if (err) reject(err);
+          else resolve(derivedKey);
+        });
+      });
 
-      const hashBase64 = derivedKey.toString("base64")
-      const saltBase64 = salt.toString("base64")
+      const hashBase64 = derivedKey.toString("base64");
+      const saltBase64 = salt.toString("base64");
 
       return {
         hash: hashBase64,
@@ -646,27 +550,21 @@ export function ScryptHasher(opts?: {
         N,
         r,
         p,
-      }
+      };
     },
 
     async verify(password, compare) {
-      const salt = Buffer.from(compare.salt, "base64")
-      const keyLength = 32 // 256 bits
+      const salt = Buffer.from(compare.salt, "base64");
+      const keyLength = 32; // 256 bits
 
       const derivedKey = await new Promise<Buffer>((resolve, reject) => {
-        scrypt(
-          password,
-          salt,
-          keyLength,
-          { N: compare.N, r: compare.r, p: compare.p },
-          (err, derivedKey) => {
-            if (err) reject(err)
-            else resolve(derivedKey)
-          },
-        )
-      })
+        scrypt(password, salt, keyLength, { N: compare.N, r: compare.r, p: compare.p }, (err, derivedKey) => {
+          if (err) reject(err);
+          else resolve(derivedKey);
+        });
+      });
 
-      return timingSafeEqual(derivedKey, Buffer.from(compare.hash, "base64"))
+      return timingSafeEqual(derivedKey, Buffer.from(compare.hash, "base64"));
     },
-  }
+  };
 }

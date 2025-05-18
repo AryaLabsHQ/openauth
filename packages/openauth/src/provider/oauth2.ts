@@ -32,7 +32,7 @@ export interface Oauth2Config {
   /**
    * @internal
    */
-  type?: string
+  type?: string;
   /**
    * The client ID.
    *
@@ -45,7 +45,7 @@ export interface Oauth2Config {
    * }
    * ```
    */
-  clientID: string
+  clientID: string;
   /**
    * The client secret.
    *
@@ -58,7 +58,7 @@ export interface Oauth2Config {
    * }
    * ```
    */
-  clientSecret: string
+  clientSecret: string;
   /**
    * The URLs of the authorization and token endpoints.
    *
@@ -77,7 +77,7 @@ export interface Oauth2Config {
     /**
      * The URL of the authorization endpoint.
      */
-    authorization: string
+    authorization: string;
     /**
      * The URL of the token endpoint.
      */
@@ -97,13 +97,13 @@ export interface Oauth2Config {
    * }
    * ```
    */
-  scopes: string[]
+  scopes: string[];
   /**
    * Whether to use PKCE (Proof Key for Code Exchange) for the authorization code flow.
    * Some providers like x.com require this.
    * @default false
    */
-  pkce?: boolean
+  pkce?: boolean;
   /**
    * Any additional parameters that you want to pass to the authorization endpoint.
    * @example
@@ -116,13 +116,13 @@ export interface Oauth2Config {
    * }
    * ```
    */
-  query?: Record<string, string>
+  query?: Record<string, string>;
 }
 
 /**
  * @internal
  */
-export type Oauth2WrappedConfig = Omit<Oauth2Config, "endpoint" | "name">
+export type Oauth2WrappedConfig = Omit<Oauth2Config, "endpoint" | "name">;
 
 /**
  * @internal
@@ -136,9 +136,9 @@ export interface Oauth2Token {
 }
 
 interface ProviderState {
-  state: string
-  redirect: string
-  codeVerifier?: string
+  state: string;
+  redirect: string;
+  codeVerifier?: string;
 }
 
 export function Oauth2Provider(
@@ -219,31 +219,28 @@ export function Oauth2Provider(
     type: config.type || "oauth2",
     init(routes, ctx) {
       routes.get("/authorize", async (c) => {
-        const state = crypto.randomUUID()
-        const pkce = config.pkce ? await generatePKCE() : undefined
+        const state = crypto.randomUUID();
+        const pkce = config.pkce ? await generatePKCE() : undefined;
         await ctx.set<ProviderState>(c, "provider", 60 * 10, {
           state,
           redirect: getRelativeUrl(c, "./callback"),
           codeVerifier: pkce?.verifier,
-        })
-        const authorization = new URL(config.endpoint.authorization)
-        authorization.searchParams.set("client_id", config.clientID)
-        authorization.searchParams.set(
-          "redirect_uri",
-          getRelativeUrl(c, "./callback"),
-        )
-        authorization.searchParams.set("response_type", "code")
-        authorization.searchParams.set("state", state)
-        authorization.searchParams.set("scope", config.scopes.join(" "))
+        });
+        const authorization = new URL(config.endpoint.authorization);
+        authorization.searchParams.set("client_id", config.clientID);
+        authorization.searchParams.set("redirect_uri", getRelativeUrl(c, "./callback"));
+        authorization.searchParams.set("response_type", "code");
+        authorization.searchParams.set("state", state);
+        authorization.searchParams.set("scope", config.scopes.join(" "));
         if (pkce) {
-          authorization.searchParams.set("code_challenge", pkce.challenge)
-          authorization.searchParams.set("code_challenge_method", pkce.method)
+          authorization.searchParams.set("code_challenge", pkce.challenge);
+          authorization.searchParams.set("code_challenge_method", pkce.method);
         }
         for (const [key, value] of Object.entries(query)) {
-          authorization.searchParams.set(key, value)
+          authorization.searchParams.set(key, value);
         }
-        return c.redirect(authorization.toString())
-      })
+        return c.redirect(authorization.toString());
+      });
 
       routes.get("/callback", async (c) => {
         const provider = (await ctx.get(c, "provider")) as ProviderState
@@ -293,5 +290,5 @@ export function Oauth2Provider(
         return handleCallbackLogic(c, ctx, provider, code)
       })
     },
-  }
+  };
 }

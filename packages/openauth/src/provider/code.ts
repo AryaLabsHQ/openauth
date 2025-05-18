@@ -52,19 +52,17 @@
  *
  * @packageDocumentation
  */
-import { Context } from "hono"
-import { Provider } from "./provider.js"
-import { generateUnbiasedDigits, timingSafeCompare } from "../random.js"
+import type { Context } from "hono";
+import { generateUnbiasedDigits, timingSafeCompare } from "../random.js";
+import type { Provider } from "./provider.js";
 
-export interface CodeProviderConfig<
-  Claims extends Record<string, string> = Record<string, string>,
-> {
+export interface CodeProviderConfig<Claims extends Record<string, string> = Record<string, string>> {
   /**
    * The length of the pin code.
    *
    * @default 6
    */
-  length?: number
+  length?: number;
   /**
    * The request handler to generate the UI for the code flow.
    *
@@ -77,12 +75,7 @@ export interface CodeProviderConfig<
    * Expects the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
    * in return.
    */
-  request: (
-    req: Request,
-    state: CodeProviderState,
-    form?: FormData,
-    error?: CodeProviderError,
-  ) => Promise<Response>
+  request: (req: Request, state: CodeProviderState, form?: FormData, error?: CodeProviderError) => Promise<Response>;
   /**
    * Callback to send the pin code to the user.
    *
@@ -95,7 +88,7 @@ export interface CodeProviderConfig<
    * }
    * ```
    */
-  sendCode: (claims: Claims, code: string) => Promise<void | CodeProviderError>
+  sendCode: (claims: Claims, code: string) => Promise<void | CodeProviderError>;
 }
 
 /**
@@ -108,14 +101,14 @@ export interface CodeProviderConfig<
  */
 export type CodeProviderState =
   | {
-      type: "start"
+      type: "start";
     }
   | {
-      type: "code"
-      resend?: boolean
-      code: string
-      claims: Record<string, string>
-    }
+      type: "code";
+      resend?: boolean;
+      code: string;
+      claims: Record<string, string>;
+    };
 
 /**
  * The errors that can happen on the code flow.
@@ -127,56 +120,48 @@ export type CodeProviderState =
  */
 export type CodeProviderError =
   | {
-      type: "invalid_code"
+      type: "invalid_code";
     }
   | {
-      type: "invalid_claim"
-      key: string
-      value: string
-    }
+      type: "invalid_claim";
+      key: string;
+      value: string;
+    };
 
-export function CodeProvider<
-  Claims extends Record<string, string> = Record<string, string>,
->(config: CodeProviderConfig<Claims>): Provider<{ claims: Claims }> {
-  const length = config.length || 6
+export function CodeProvider<Claims extends Record<string, string> = Record<string, string>>(
+  config: CodeProviderConfig<Claims>,
+): Provider<{ claims: Claims }> {
+  const length = config.length || 6;
   function generate() {
-    return generateUnbiasedDigits(length)
+    return generateUnbiasedDigits(length);
   }
 
   return {
     type: "code",
     init(routes, ctx) {
-      async function transition(
-        c: Context,
-        next: CodeProviderState,
-        fd?: FormData,
-        err?: CodeProviderError,
-      ) {
-        await ctx.set<CodeProviderState>(c, "provider", 60 * 60 * 24, next)
-        const resp = ctx.forward(
-          c,
-          await config.request(c.req.raw, next, fd, err),
-        )
-        return resp
+      async function transition(c: Context, next: CodeProviderState, fd?: FormData, err?: CodeProviderError) {
+        await ctx.set<CodeProviderState>(c, "provider", 60 * 60 * 24, next);
+        const resp = ctx.forward(c, await config.request(c.req.raw, next, fd, err));
+        return resp;
       }
       routes.get("/authorize", async (c) => {
         const resp = await transition(c, {
           type: "start",
-        })
-        return resp
-      })
+        });
+        return resp;
+      });
 
       routes.post("/authorize", async (c) => {
-        const code = generate()
-        const fd = await c.req.formData()
-        const state = await ctx.get<CodeProviderState>(c, "provider")
-        const action = fd.get("action")?.toString()
+        const code = generate();
+        const fd = await c.req.formData();
+        const state = await ctx.get<CodeProviderState>(c, "provider");
+        const action = fd.get("action")?.toString();
 
         if (action === "request" || action === "resend") {
-          const claims = Object.fromEntries(fd) as Claims
-          delete claims.action
-          const err = await config.sendCode(claims, code)
-          if (err) return transition(c, { type: "start" }, fd, err)
+          const claims = Object.fromEntries(fd) as Claims;
+          delete claims.action;
+          const err = await config.sendCode(claims, code);
+          if (err) return transition(c, { type: "start" }, fd, err);
           return transition(
             c,
             {
@@ -186,20 +171,13 @@ export function CodeProvider<
               code,
             },
             fd,
-          )
+          );
         }
 
-        if (
-          fd.get("action")?.toString() === "verify" &&
-          state.type === "code"
-        ) {
-          const fd = await c.req.formData()
-          const compare = fd.get("code")?.toString()
-          if (
-            !state.code ||
-            !compare ||
-            !timingSafeCompare(state.code, compare)
-          ) {
+        if (fd.get("action")?.toString() === "verify" && state.type === "code") {
+          const fd = await c.req.formData();
+          const compare = fd.get("code")?.toString();
+          if (!state.code || !compare || !timingSafeCompare(state.code, compare)) {
             return transition(
               c,
               {
@@ -208,20 +186,17 @@ export function CodeProvider<
               },
               fd,
               { type: "invalid_code" },
-            )
+            );
           }
-          await ctx.unset(c, "provider")
-          return ctx.forward(
-            c,
-            await ctx.success(c, { claims: state.claims as Claims }),
-          )
+          await ctx.unset(c, "provider");
+          return ctx.forward(c, await ctx.success(c, { claims: state.claims as Claims }));
         }
-      })
+      });
     },
-  }
+  };
 }
 
 /**
  * @internal
  */
-export type CodeProviderOptions = Parameters<typeof CodeProvider>[0]
+export type CodeProviderOptions = Parameters<typeof CodeProvider>[0];

@@ -19,7 +19,7 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
 
 export interface KeycloakConfig extends Oauth2WrappedConfig {
   /**
@@ -32,7 +32,7 @@ export interface KeycloakConfig extends Oauth2WrappedConfig {
    * }
    * ```
    */
-  baseUrl: string
+  baseUrl: string;
   /**
    * The realm in the Keycloak server to authenticate against.
    *
@@ -46,7 +46,7 @@ export interface KeycloakConfig extends Oauth2WrappedConfig {
    * }
    * ```
    */
-  realm: string
+  realm: string;
 }
 
 /**
@@ -70,6 +70,6 @@ export function KeycloakProvider(config: KeycloakConfig) {
       authorization: `${config.baseUrl}/realms/${config.realm}/protocol/openid-connect/auth`,
       token: `${config.baseUrl}/realms/${config.realm}/protocol/openid-connect/token`,
     },
-  }
-  return Oauth2Provider(baseConfig)
+  };
+  return Oauth2Provider(baseConfig);
 }

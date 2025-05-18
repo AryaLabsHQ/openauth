@@ -2,16 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 /* deno-fmt-ignore-file */
-import "sst"
-export {}
+import "sst";
 declare module "sst" {
   export interface Resource {
     CloudflareAuth: {
-      type: "sst.cloudflare.Worker"
-      url: string
-    }
+      type: "sst.cloudflare.Worker";
+      url: string;
+    };
     CloudflareAuthKV: {
-      type: "sst.cloudflare.Kv"
-    }
+      type: "sst.cloudflare.Kv";
+    };
   }
 }

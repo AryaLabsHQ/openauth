@@ -17,7 +17,7 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
 
 export interface GithubConfig extends Oauth2WrappedConfig {}
 
@@ -41,5 +41,5 @@ export function GithubProvider(config: GithubConfig) {
       authorization: "https://github.com/login/oauth/authorize",
       token: "https://github.com/login/oauth/access_token",
     },
-  })
+  });
 }

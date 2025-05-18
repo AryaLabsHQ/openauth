@@ -17,7 +17,7 @@
  * @packageDocumentation
  */
 
-import { Oauth2Provider, Oauth2WrappedConfig } from "./oauth2.js"
+import { Oauth2Provider, type Oauth2WrappedConfig } from "./oauth2.js";
 
 export interface DiscordConfig extends Oauth2WrappedConfig {}
 
@@ -41,5 +41,5 @@ export function DiscordProvider(config: DiscordConfig) {
       authorization: "https://discord.com/oauth2/authorize",
       token: "https://discord.com/api/oauth2/token",
     },
-  })
+  });
 }

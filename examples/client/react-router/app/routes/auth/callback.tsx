@@ -3,8 +3,8 @@ import { client, setTokens } from "../../auth.server";
 import type { Route } from "./+types/callback";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const url   = new URL(request.url);
-  const code  = url.searchParams.get("code");
+  const url = new URL(request.url);
+  const code = url.searchParams.get("code");
   if (!code) return { error: "Missing code" };
 
   const exchanged = await client.exchange(code, `${url.origin}/api/auth/callback`);

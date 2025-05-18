@@ -29,7 +29,7 @@ export class OauthError extends Error {
       | "temporarily_unavailable",
     public description: string,
   ) {
-    super(error + " - " + description)
+    super(error + " - " + description);
   }
 }
 
@@ -38,10 +38,7 @@ export class OauthError extends Error {
  */
 export class MissingProviderError extends OauthError {
   constructor() {
-    super(
-      "invalid_request",
-      "Must specify `provider` query parameter if `select` callback on issuer is not specified",
-    )
+    super("invalid_request", "Must specify `provider` query parameter if `select` callback on issuer is not specified");
   }
 }
 
@@ -50,7 +47,7 @@ export class MissingProviderError extends OauthError {
  */
 export class MissingParameterError extends OauthError {
   constructor(public parameter: string) {
-    super("invalid_request", "Missing parameter: " + parameter)
+    super("invalid_request", "Missing parameter: " + parameter);
   }
 }
 
@@ -62,10 +59,7 @@ export class UnauthorizedClientError extends OauthError {
     public clientID: string,
     redirectURI: string,
   ) {
-    super(
-      "unauthorized_client",
-      `Client ${clientID} is not authorized to use this redirect_uri: ${redirectURI}`,
-    )
+    super("unauthorized_client", `Client ${clientID} is not authorized to use this redirect_uri: ${redirectURI}`);
   }
 }
 
@@ -79,7 +73,7 @@ export class UnknownStateError extends Error {
   constructor() {
     super(
       "The browser was in an unknown state. This could be because certain cookies expired or the browser was switched in the middle of an authentication flow.",
-    )
+    );
   }
 }
 
@@ -88,7 +82,7 @@ export class UnknownStateError extends Error {
  */
 export class InvalidSubjectError extends Error {
   constructor() {
-    super("Invalid subject")
+    super("Invalid subject");
   }
 }
 
@@ -97,7 +91,7 @@ export class InvalidSubjectError extends Error {
  */
 export class InvalidRefreshTokenError extends Error {
   constructor() {
-    super("Invalid refresh token")
+    super("Invalid refresh token");
   }
 }
 
@@ -106,7 +100,7 @@ export class InvalidRefreshTokenError extends Error {
  */
 export class InvalidAccessTokenError extends Error {
   constructor() {
-    super("Invalid access token")
+    super("Invalid access token");
   }
 }
 
@@ -115,6 +109,6 @@ export class InvalidAccessTokenError extends Error {
  */
 export class InvalidAuthorizationCodeError extends Error {
   constructor() {
-    super("Invalid authorization code")
+    super("Invalid authorization code");
   }
 }

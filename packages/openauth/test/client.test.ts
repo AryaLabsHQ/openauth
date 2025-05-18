@@ -1,29 +1,18 @@
-import {
-  expect,
-  test,
-  describe,
-  beforeEach,
-  afterEach,
-  afterAll,
-  vi,
-} from "vitest"
-import { object, string } from "valibot"
-import { issuer } from "../src/issuer.js"
-import { createClient } from "../src/client.js"
-import {
-  InvalidAccessTokenError,
-  InvalidRefreshTokenError,
-} from "../src/error.js"
-import { MemoryStorage } from "../src/storage/memory.js"
-import { createSubjects } from "../src/subject.js"
+import { object, string } from "valibot";
+import { afterAll, afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { createClient } from "../src/client.js";
+import { InvalidAccessTokenError, InvalidRefreshTokenError } from "../src/error.js";
+import { issuer } from "../src/issuer.js";
+import { MemoryStorage } from "../src/storage/memory.js";
+import { createSubjects } from "../src/subject.js";
 
 const subjects = createSubjects({
   user: object({
     userID: string(),
   }),
-})
+});
 
-let storage = MemoryStorage()
+const storage = MemoryStorage();
 const auth = issuer({
   storage,
   subjects,
@@ -31,7 +20,7 @@ const auth = issuer({
   success: async (ctx) => {
     return ctx.subject("user", {
       userID: "123",
-    })
+    });
   },
   ttl: {
     access: 60,
@@ -43,31 +32,31 @@ const auth = issuer({
         route.get("/authorize", async (c) => {
           return ctx.success(c, {
             email: "foo@bar.com",
-          })
-        })
+          });
+        });
       },
     },
   },
-})
+});
 
-const expectNonEmptyString = expect.stringMatching(/.+/)
+const expectNonEmptyString = expect.stringMatching(/.+/);
 
 beforeEach(async () => {
-  vi.setSystemTime(new Date("1/1/2024"))
-})
+  vi.setSystemTime(new Date("1/1/2024"));
+});
 
 afterEach(() => {
-  vi.useRealTimers()
-})
+  vi.useRealTimers();
+});
 
-const consoleSpy = vi.spyOn(console, "error").mockImplementation(vi.fn())
+const consoleSpy = vi.spyOn(console, "error").mockImplementation(vi.fn());
 afterAll(() => {
-  consoleSpy.mockRestore()
-})
+  consoleSpy.mockRestore();
+});
 
 describe("verify", () => {
-  let tokens: { access: string; refresh: string }
-  let client: ReturnType<typeof createClient>
+  let tokens: { access: string; refresh: string };
+  let client: ReturnType<typeof createClient>;
 
   beforeEach(async () => {
     client = createClient({
@@ -75,30 +64,24 @@ describe("verify", () => {
       issuer: "https://auth1.example.com",
       clientID: "123",
       fetch: (a, b) => Promise.resolve(auth.request(a, b)),
-    })
-    const [verifier, authorization] = await client.pkce(
-      "https://client.example.com/callback",
-    )
-    let response = await auth.request(authorization)
+    });
+    const [verifier, authorization] = await client.pkce("https://client.example.com/callback");
+    let response = await auth.request(authorization);
     response = await auth.request(response.headers.get("location")!, {
       headers: {
         cookie: response.headers.get("set-cookie")!,
       },
-    })
-    const location = new URL(response.headers.get("location")!)
-    const code = location.searchParams.get("code")
-    const exchanged = await client.exchange(
-      code!,
-      "https://client.example.com/callback",
-      verifier,
-    )
-    if (exchanged.err) throw exchanged.err
-    tokens = exchanged.tokens
-  })
+    });
+    const location = new URL(response.headers.get("location")!);
+    const code = location.searchParams.get("code");
+    const exchanged = await client.exchange(code!, "https://client.example.com/callback", verifier);
+    if (exchanged.err) throw exchanged.err;
+    tokens = exchanged.tokens;
+  });
 
   test("success", async () => {
-    const refreshSpy = vi.spyOn(client, "refresh")
-    const verified = await client.verify(subjects, tokens.access)
+    const refreshSpy = vi.spyOn(client, "refresh");
+    const verified = await client.verify(subjects, tokens.access);
     expect(verified).toStrictEqual({
       aud: "123",
       subject: {
@@ -107,16 +90,16 @@ describe("verify", () => {
           userID: "123",
         },
       },
-    })
-    expect(refreshSpy).not.toBeCalled()
-  })
+    });
+    expect(refreshSpy).not.toBeCalled();
+  });
 
   test("success after refresh", async () => {
-    const refreshSpy = vi.spyOn(client, "refresh")
-    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
+    const refreshSpy = vi.spyOn(client, "refresh");
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000);
     const verified = await client.verify(subjects, tokens.access, {
       refresh: tokens.refresh,
-    })
+    });
     expect(verified).toStrictEqual({
       aud: "123",
       tokens: {
@@ -130,25 +113,25 @@ describe("verify", () => {
           userID: "123",
         },
       },
-    })
-    expect(refreshSpy).toBeCalled()
-  })
+    });
+    expect(refreshSpy).toBeCalled();
+  });
 
   test("failure with expired access token", async () => {
-    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
-    const verified = await client.verify(subjects, tokens.access)
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000);
+    const verified = await client.verify(subjects, tokens.access);
     expect(verified).toStrictEqual({
       err: expect.any(InvalidAccessTokenError),
-    })
-  })
+    });
+  });
 
   test("failure with invalid refresh token", async () => {
-    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000);
     const verified = await client.verify(subjects, tokens.access, {
       refresh: "foo",
-    })
+    });
     expect(verified).toStrictEqual({
       err: expect.any(InvalidRefreshTokenError),
-    })
-  })
-})
+    });
+  });
+});
