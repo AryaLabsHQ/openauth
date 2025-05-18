@@ -1,7 +1,11 @@
+import type { SubjectPayload } from "@aryalabs/openauth/subject";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
+import { subjects } from "@aryalabs/openauth-shared";
+import { Link } from "react-router";
 
-export function Welcome() {
+export function Welcome({ subject }: { subject: SubjectPayload<typeof subjects> }) {
+  console.log('subject: ', subject);
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -24,6 +28,19 @@ export function Welcome() {
             <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
               What&apos;s next?
             </p>
+            {subject ? (
+              <>
+                <p>
+                  Logged in as <code>{subject.properties.id}</code>.
+                </p>
+                <Link to="/logout">Logout</Link>
+              </>
+            ) : (
+              <>
+                <p>Login with your email and password.</p>
+                <Link to="/login">Login</Link>
+              </>
+            )}
             <ul>
               {resources.map(({ href, text, icon }) => (
                 <li key={href}>

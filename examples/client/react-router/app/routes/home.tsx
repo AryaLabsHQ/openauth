@@ -1,5 +1,9 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
+import { useRouteLoaderData } from "react-router";
+import type { loader } from "~/root";
+import type { SubjectPayload } from "@aryalabs/openauth/subject";
+import type { subjects } from "@aryalabs/openauth-shared";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +13,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <Welcome />;
+  const data = useRouteLoaderData<typeof loader>("root");
+  const subject = data?.subject as SubjectPayload<typeof subjects>;
+
+  return <Welcome subject={subject} />;
 }

@@ -2,7 +2,7 @@ import { issuer } from "@aryalabs/openauth"
 import { MemoryStorage } from "@aryalabs/openauth/storage/memory"
 import { PasswordUI } from "@aryalabs/openauth/ui/password"
 import { serve } from "@hono/node-server"
-import { subjects } from "../../subjects"
+import { subjects } from "@aryalabs/openauth-shared"
 import { PasswordProvider } from "@aryalabs/openauth/provider/password"
 
 async function getUser(email: string) {
@@ -35,4 +35,6 @@ const app = issuer({
   },
 })
 
-serve(app)
+serve(app, (info) => {
+  console.log(`Server is running on ${info.address}:${info.port}`)
+})

@@ -2,10 +2,18 @@
   "name": "node",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@aryalabs/openauth": "workspace:*"
+    "@aryalabs/openauth": "workspace:*",
+    "@aryalabs/openauth-shared": "workspace:*",
+    "hono": "^4.7.10"
   },
   "devDependencies": {
-    "@hono/node-server": "^1.14.1"
+    "@hono/node-server": "^1.14.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "dev": "tsx watch authorizer.ts"
   }
 }

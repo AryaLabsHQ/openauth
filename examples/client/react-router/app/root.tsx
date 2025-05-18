@@ -1,4 +1,5 @@
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -9,6 +10,16 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { verifySubject } from "./auth.server";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const verified = await verifySubject(request);
+  return data(verified ? { subject: verified.subject, headers: verified.headers } : null);
+}
+
+export function headers({ loaderHeaders }: Route.HeadersArgs) {
+  return loaderHeaders;
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

@@ -2,6 +2,7 @@ packages:
   - packages/*
   - examples/issuer/*
   - examples/client/*
+  - examples/shared
 onlyBuiltDependencies:
   - '@biomejs/biome'
   - aws-sdk

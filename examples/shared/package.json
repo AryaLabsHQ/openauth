@@ -1,0 +1,16 @@
+{
+  "name": "@aryalabs/openauth-shared",
+  "type": "module",
+  "module": "index.ts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "@aryalabs/openauth": "workspace:*",
+    "zod": "^3.24.4"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.11.0"
+}
