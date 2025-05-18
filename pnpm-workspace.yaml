@@ -4,5 +4,6 @@ packages:
   - examples/client/*
 onlyBuiltDependencies:
   - '@biomejs/biome'
+  - aws-sdk
   - esbuild
   - sharp
