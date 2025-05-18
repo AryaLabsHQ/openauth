@@ -55,7 +55,17 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/openauth
 
-  examples/client/lambda-api: {}
+  examples/client/lambda-api:
+    dependencies:
+      '@aryalabs/openauth':
+        specifier: workspace:*
+        version: link:../../../packages/openauth
+      '@aryalabs/openauth-shared':
+        specifier: workspace:*
+        version: link:../../shared
+      hono:
+        specifier: ^4.7.10
+        version: 4.7.10
 
   examples/client/nextjs:
     dependencies:
