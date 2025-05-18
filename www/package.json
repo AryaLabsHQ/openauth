@@ -14,7 +14,7 @@
     "@astrojs/markdown-remark": "^6.0.1",
     "@astrojs/starlight": "^0.32.0",
     "@fontsource/ibm-plex-mono": "^5.1.0",
-    "astro": "^5.7.0",
+    "astro": "^5.7.13",
     "rehype-autolink-headings": "^7.1.0",
     "sharp": "^0.33.4",
     "toolbeam-docs-theme": "^0.0.3"
