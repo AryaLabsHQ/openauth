@@ -1,14 +1,12 @@
 import {
   expect,
   test,
-  setSystemTime,
   describe,
   beforeEach,
   afterEach,
-  spyOn,
   afterAll,
-  mock,
-} from "bun:test"
+  vi,
+} from "vitest"
 import { object, string } from "valibot"
 import { issuer } from "../src/issuer.js"
 import { createClient } from "../src/client.js"
@@ -55,14 +53,14 @@ const auth = issuer({
 const expectNonEmptyString = expect.stringMatching(/.+/)
 
 beforeEach(async () => {
-  setSystemTime(new Date("1/1/2024"))
+  vi.setSystemTime(new Date("1/1/2024"))
 })
 
 afterEach(() => {
-  setSystemTime()
+  vi.useRealTimers()
 })
 
-const consoleSpy = spyOn(console, "error").mockImplementation(mock())
+const consoleSpy = vi.spyOn(console, "error").mockImplementation(vi.fn())
 afterAll(() => {
   consoleSpy.mockRestore()
 })
@@ -99,7 +97,7 @@ describe("verify", () => {
   })
 
   test("success", async () => {
-    const refreshSpy = spyOn(client, "refresh")
+    const refreshSpy = vi.spyOn(client, "refresh")
     const verified = await client.verify(subjects, tokens.access)
     expect(verified).toStrictEqual({
       aud: "123",
@@ -114,8 +112,8 @@ describe("verify", () => {
   })
 
   test("success after refresh", async () => {
-    const refreshSpy = spyOn(client, "refresh")
-    setSystemTime(Date.now() + 1000 * 6000 + 1000)
+    const refreshSpy = vi.spyOn(client, "refresh")
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
     const verified = await client.verify(subjects, tokens.access, {
       refresh: tokens.refresh,
     })
@@ -137,7 +135,7 @@ describe("verify", () => {
   })
 
   test("failure with expired access token", async () => {
-    setSystemTime(Date.now() + 1000 * 6000 + 1000)
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
     const verified = await client.verify(subjects, tokens.access)
     expect(verified).toStrictEqual({
       err: expect.any(InvalidAccessTokenError),
@@ -145,7 +143,7 @@ describe("verify", () => {
   })
 
   test("failure with invalid refresh token", async () => {
-    setSystemTime(Date.now() + 1000 * 6000 + 1000)
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
     const verified = await client.verify(subjects, tokens.access, {
       refresh: "foo",
     })

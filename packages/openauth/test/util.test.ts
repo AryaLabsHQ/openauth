@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test"
+import { expect, test } from "vitest"
 import { Context } from "hono"
 import { getRelativeUrl, isDomainMatch } from "../src/util.js"
 

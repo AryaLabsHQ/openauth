@@ -1,16 +1,16 @@
-import { afterEach, setSystemTime } from "bun:test"
-import { beforeEach, describe, expect, test } from "bun:test"
+import { afterEach, vi } from "vitest"
+import { beforeEach, describe, expect, test } from "vitest"
 import { MemoryStorage } from "../src/storage/memory.js"
 
 let storage = MemoryStorage()
 
 beforeEach(async () => {
   storage = MemoryStorage()
-  setSystemTime(new Date("1/1/2024"))
+  vi.setSystemTime(new Date("1/1/2024"))
 })
 
 afterEach(() => {
-  setSystemTime()
+  vi.useRealTimers()
 })
 
 describe("set", () => {
@@ -29,7 +29,7 @@ describe("set", () => {
     let result = await storage.get(["temp", "key"])
     expect(result?.value).toBe("value")
 
-    setSystemTime(Date.now() + 150)
+    vi.setSystemTime(new Date(Date.now() + 150))
     result = await storage.get(["temp", "key"])
     expect(result).toBeUndefined()
   })
@@ -88,7 +88,7 @@ describe("scan", () => {
     await storage.set(["temp", "2"], "b", new Date(Date.now() + 100))
     await storage.set(["temp", "3"], "c")
     expect(await Array.fromAsync(storage.scan(["temp"]))).toHaveLength(3)
-    setSystemTime(Date.now() + 150)
+    vi.setSystemTime(new Date(Date.now() + 150))
     expect(await Array.fromAsync(storage.scan(["temp"]))).toHaveLength(1)
   })
 })

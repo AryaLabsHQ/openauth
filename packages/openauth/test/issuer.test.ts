@@ -1,11 +1,11 @@
 import {
   expect,
   test,
-  setSystemTime,
   describe,
   beforeEach,
   afterEach,
-} from "bun:test"
+  vi,
+} from "vitest"
 import { object, string } from "valibot"
 import { issuer } from "../src/issuer.js"
 import { createClient } from "../src/client.js"
@@ -64,11 +64,11 @@ const auth = issuer(issuerConfig)
 const expectNonEmptyString = expect.stringMatching(/.+/)
 
 beforeEach(async () => {
-  setSystemTime(new Date("1/1/2024"))
+  vi.setSystemTime(new Date("1/1/2024"))
 })
 
 afterEach(() => {
-  setSystemTime()
+  vi.useRealTimers()
 })
 
 describe("code flow", () => {
@@ -215,7 +215,7 @@ describe("refresh token", () => {
   })
 
   test("success", async () => {
-    setSystemTime(Date.now() + 1000 * 60 + 1000)
+    vi.setSystemTime(Date.now() + 1000 * 60 + 1000)
     let response = await requestRefreshToken(tokens.refresh)
     expect(response.status).toBe(200)
     const refreshed = await response.json()
@@ -241,7 +241,7 @@ describe("refresh token", () => {
 
   test("success with valid access token", async () => {
     // have to increment the time so new access token claims are different (i.e. exp)
-    setSystemTime(Date.now() + 1000)
+    vi.setSystemTime(Date.now() + 1000)
     let response = await requestRefreshToken(tokens.refresh)
     expect(response.status).toBe(200)
     const refreshed = await response.json()
@@ -301,7 +301,7 @@ describe("refresh token", () => {
     const refreshed = await response.json()
     const [, refreshedAccessPayload] = refreshed.access_token.split(".")
 
-    setSystemTime(Date.now() + 1000 * 30)
+    vi.setSystemTime(Date.now() + 1000 * 30)
 
     response = await requestRefreshToken(tokens.refresh)
     expect(response.status).toBe(200)
@@ -319,14 +319,14 @@ describe("refresh token", () => {
     let response = await requestRefreshToken(tokens.refresh)
     expect(response.status).toBe(200)
 
-    setSystemTime(Date.now() + 1000 * 60 + 1000)
+    vi.setSystemTime(Date.now() + 1000 * 60 + 1000)
 
     response = await requestRefreshToken(tokens.refresh)
     expect(response.status).toBe(400)
   })
 
   test("expired failure", async () => {
-    setSystemTime(Date.now() + 1000 * 6000 + 1000)
+    vi.setSystemTime(Date.now() + 1000 * 6000 + 1000)
     let response = await requestRefreshToken(tokens.refresh)
     expect(response.status).toBe(400)
     const reused = await response.json()

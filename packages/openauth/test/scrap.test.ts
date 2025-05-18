@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test"
+import { expect, test } from "vitest"
 import { issuer } from "../src/issuer.js"
 import { MemoryStorage } from "../src/storage/memory.js"
 import { object, string } from "valibot"
