@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+  - examples/issuer/*
+  - examples/client/*
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

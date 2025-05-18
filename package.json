@@ -12,13 +12,12 @@
     "release": "bun run --filter=\"@aryalabs/openauth\" build && changeset publish"
   },
   "devDependencies": {
-    "@tsconfig/node22": "22.0.0",
-    "@types/bun": "latest"
+    "@tsconfig/node22": "^22.0.1"
   },
   "dependencies": {
-    "@changesets/cli": "2.27.10",
-    "prettier": "3.4.2",
-    "typescript": "5.6.3"
+    "@changesets/cli": "^2.29.4",
+    "typescript": "^5.8.3"
   },
-  "private": true
+  "private": true,
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
