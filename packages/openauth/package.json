@@ -27,14 +27,7 @@
       "types": "./dist/ui/index.d.ts"
     }
   },
-  "keywords": [
-    "openauth",
-    "auth",
-    "authentication",
-    "oauth",
-    "openid",
-    "openid connect"
-  ],
+  "keywords": ["openauth", "auth", "authentication", "oauth", "openid", "openid connect"],
   "peerDependencies": {
     "arctic": "^2.2.2",
     "hono": "^4.0.0"
@@ -56,8 +49,5 @@
     "vite": "^6.3.5",
     "vitest": "^3.1.3"
   },
-  "files": [
-    "src",
-    "dist"
-  ]
+  "files": ["src", "dist"]
 }
