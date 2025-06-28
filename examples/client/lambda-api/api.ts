@@ -1,8 +1,8 @@
+import { subjects } from "@aryalabs/openauth-shared";
 import { createClient } from "@aryalabs/openauth/client";
 import { type Context, Hono } from "hono";
 import { handle } from "hono/aws-lambda";
 import { getCookie, setCookie } from "hono/cookie";
-import { subjects } from "@aryalabs/openauth-shared";
 
 const client = createClient({
   clientID: "lambda-api",
