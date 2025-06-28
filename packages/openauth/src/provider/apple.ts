@@ -62,7 +62,7 @@ export interface AppleConfig extends Oauth2WrappedConfig {
    * Apple requires 'form_post' response mode when requesting name or email scopes.
    * @default "query"
    */
-  responseMode?: "query" | "form_post"
+  responseMode?: "query" | "form_post";
 }
 export interface AppleOidcConfig extends OidcWrappedConfig {}
 
@@ -89,11 +89,8 @@ export interface AppleOidcConfig extends OidcWrappedConfig {}
  * ```
  */
 export function AppleProvider(config: AppleConfig) {
-  const { responseMode, ...restConfig } = config
-  const additionalQuery =
-    responseMode === "form_post"
-      ? { response_mode: "form_post", ...config.query }
-      : config.query || {}
+  const { responseMode, ...restConfig } = config;
+  const additionalQuery = responseMode === "form_post" ? { response_mode: "form_post", ...config.query } : config.query || {};
 
   return Oauth2Provider({
     ...restConfig,
@@ -104,7 +101,7 @@ export function AppleProvider(config: AppleConfig) {
       jwks: "https://appleid.apple.com/auth/keys",
     },
     query: additionalQuery,
-  })
+  });
 }
 
 /**
